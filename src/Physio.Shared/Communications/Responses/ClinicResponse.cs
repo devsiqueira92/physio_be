@@ -1,4 +1,4 @@
 ﻿
 namespace Physio.Shared.Communications.Responses;
 
-public record ClinicResponse(string name);
+public record ClinicResponse(Guid id, string name);

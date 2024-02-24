@@ -25,6 +25,43 @@ public static class DomainErrors
             "Patient must have more than 18 years");
     }
 
+    public static class Professional
+    {
+        public static readonly Error ProfessionalAlreadyRegistred = new(
+            "Professional.ProfessionalAlreadyRegistred",
+            "Professional already registred.");
+    }
+
+
+    public static class ProfessionalClinic
+    {
+        public static readonly Error ProfessionalAlreadyRegistred = new(
+            "ProfessionalClinic.ProfessionalAlreadyRegistred",
+            "Professional already registred to your clinic.");
+
+        public static readonly Error ProfessionalNotFound = new(
+            "ProfessionalClinic.ProfessionalNotFound",
+            "Professional not found.");
+    }
+
+    public static class ClinicPatient
+    {
+        public static readonly Error PatientAlreadyRegistred = new(
+            "ClinicPatient.PatientAlreadyRegistred",
+            "Patient already registred to your clinic.");
+
+        public static readonly Error PatientNotFound = new(
+            "PatientClinic.PatientNotFound",
+            "Patient not found.");
+    }
+
+    public static class Clinic
+    {
+        public static readonly Error ClinicAlreadyRegistred = new(
+            "Clinic.ClinicAlreadyRegistred",
+            "Clinic already registred.");
+    }
+
     public static class Scheduling
     {
         public static readonly Error PatientUnavailable = new(

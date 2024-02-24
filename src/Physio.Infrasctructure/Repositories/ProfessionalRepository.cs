@@ -2,6 +2,7 @@
 using Physio.Domain.Entities;
 using Physio.Domain.RepositoryInterfaces;
 using Physio.Infrasctructure.Context;
+using System.Linq;
 
 namespace Physio.Infrastructure.Repositories;
 
@@ -42,6 +43,21 @@ internal sealed class ProfessionalRepository : IProfessionalRepository
     {
         var query = _context.Professionals
                     .Where(cls => !cls.IsDeleted && cls.Id == id);
+
+        return await query.SingleOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<bool> CheckAvailabilityAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Professionals
+                    .AsNoTracking()
+                    .Where(cls => !cls.IsDeleted && cls.UserId == userId).AnyAsync(cancellationToken);
+    }
+
+    public async Task<ProfessionalEntity> FindByRegisterNumberAsync(string registerNumber, CancellationToken cancellationToken = default)
+    {
+        var query = _context.Professionals
+                    .Where(cls => !cls.IsDeleted && cls.RegisterNumber == registerNumber);
 
         return await query.SingleOrDefaultAsync(cancellationToken);
     }

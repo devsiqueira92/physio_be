@@ -5,7 +5,8 @@ namespace Physio.Domain.Entities;
 
 public sealed class PatientEntity : PersonEntity
 {
-    public string Contact {  get; set; }
+    public string Contact { get; set; }
+    public ICollection<ClinicPatientEntity> Clinics { get; set; }
 
     public static Result<PatientEntity> Create(string name, DateOnly birthDate, string contact, Guid userId)
     {

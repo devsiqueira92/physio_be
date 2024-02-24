@@ -9,4 +9,5 @@ public interface IPatientRepository
     void Update(PatientEntity entity);
     Task<List<PatientEntity>> GetAllAsync(int page, int pageSize, CancellationToken cancellationToken = default);
     Task<PatientEntity> GetAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<bool> FindByDocumentNumberAsync(string documentNumber, CancellationToken cancellationToken = default);
 }

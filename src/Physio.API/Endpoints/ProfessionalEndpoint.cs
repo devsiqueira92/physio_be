@@ -27,16 +27,22 @@ public class ProfessionalEndpoint : IEndpointDefinition
         .WithName(nameof(GetProfessionalById))
         .Produces<ProfessionalResponse>(201);
 
+        routes.MapPut("/update", Update)
+        .Produces(204)
+        .AddEndpointFilter<ValidationFilter<ProfessionalUpdateRequest>>();
+
+        routes.MapDelete("/{id}", Delete)
+        .Produces(204);
+
+        //criar profissional independente, onde este irá ter um userID associado e ClinicId null
         routes.MapPost("/create", Create)
         .Produces<ProfessionalResponse>(200)
         .AddEndpointFilter<ValidationFilter<ProfessionalCreateRequest>>();
 
-        routes.MapPut("/update", Update)
-       .Produces(204)
-       .AddEndpointFilter<ValidationFilter<ProfessionalUpdateRequest>>();
-
-        routes.MapDelete("/{id}", Delete)
-        .Produces(204);
+        //criar profissional para uma clinica, onde este irá ter um clinicId associado e userId null
+        routes.MapPost("/create-clinic-professional", Create)
+        .Produces<ProfessionalResponse>(200)
+        .AddEndpointFilter<ValidationFilter<ProfessionalCreateRequest>>();
     }
 
     private async Task<IResult> Get(IMediator mediator, [AsParameters] PaginatedRequest request)

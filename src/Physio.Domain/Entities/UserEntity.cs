@@ -9,4 +9,5 @@ public class UserEntity : IdentityUser
     //2 to professional
     //3 to patient
     public AccountTypeEnum LoginType { get; set; }
+    public bool IsRegistred { get; set; } = false;
 }

@@ -48,12 +48,16 @@ public static class DependencyInjection
     private static void AddRepositories(IServiceCollection services)
     {
         services.AddScoped<IJwtProvider, JwtProvider>()
+                .AddScoped<IClinicRepository, ClinicRepository>()
+                
                 .AddScoped<IMedicalAppointmentRepository, MedicalAppointmentRepository>()
                 .AddScoped<IPatientRepository, PatientRepository>()
+                .AddScoped<IProfessionalClinicRepository, ProfessionalClinicRepository>()
                 .AddScoped<IProfessionalRepository, ProfessionalRepository>()
                 .AddScoped<IProtocolRepository, ProtocolRepository>()
                 .AddScoped<ISchedulingRepository, SchedulingRepository>()
                 .AddScoped<IStatusSchedulingRepository, StatusSchedulingRepository>()
+                .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IUnitOfWork, UnitOfWork>();
     }
 

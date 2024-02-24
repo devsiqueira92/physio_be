@@ -33,7 +33,16 @@ public class ProfessionalEntityTypeConfiguration : IEntityTypeConfiguration<Prof
         .HasMaxLength(10)
         .IsRequired();
 
+        builder.Property(f => f.UserId)
+        .HasColumnName("COD_USER");
+
+        builder.HasOne(p => p.UserEntity)
+        .WithMany()
+        .HasForeignKey(p => p.UserId)
+        .OnDelete(DeleteBehavior.NoAction);
+
         builder.HasQueryFilter(x => !x.IsDeleted);
         builder.HasIndex(f => f.RegisterNumber).IsUnique();
+        builder.HasIndex(f => f.UserId).IsUnique();
     }
 }

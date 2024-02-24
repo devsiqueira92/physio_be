@@ -46,4 +46,12 @@ internal sealed class PatientRepository : IPatientRepository
 
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
+
+    public async Task<bool> FindByDocumentNumberAsync(string documentNumber, CancellationToken cancellationToken = default)
+    {
+        return await _context.Patients
+                    .AsNoTracking()
+                    .Where(cls => !cls.IsDeleted && cls.Contact == documentNumber).AnyAsync(cancellationToken);
+
+    }
 }

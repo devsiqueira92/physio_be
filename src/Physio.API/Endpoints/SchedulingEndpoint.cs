@@ -9,6 +9,7 @@ using Physio.Application.Scheduling.Commands.UpdateStatusScheduling;
 using Physio.Application.Scheduling.Queries.GetAll;
 using Physio.Application.Scheduling.Queries.GetByDate;
 using Physio.Application.Scheduling.Queries.GetById;
+using Physio.Application.Scheduling.Queries.GetByMonthYear;
 using Physio.Shared.Communications.Requests;
 using Physio.Shared.Communications.Responses;
 using System.Security.Claims;

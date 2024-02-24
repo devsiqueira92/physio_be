@@ -24,7 +24,8 @@ internal sealed class JwtProvider : IJwtProvider
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email),
-            new("accType", user.LoginType.ToString())
+            new("accType", user.LoginType.ToString()),
+            new("isRegistred", user.IsRegistred.ToString()),
         };
 
         //HashSet<string> permissions = await _permissionService
