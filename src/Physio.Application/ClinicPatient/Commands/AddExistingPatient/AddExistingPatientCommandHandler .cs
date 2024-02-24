@@ -27,10 +27,10 @@ internal sealed class AddExistingPatientCommandHandler : IRequestHandler<AddExis
         if (patient is null)
             return Result.Failure<ClinicPatientResponse>(DomainErrors.ClinicPatient.PatientNotFound);
 
-        var isRegistred = await _clinicPatientRepository.CheckAvailabilityAsync(patient.Id, request.patient.clinicId);
+        var isRegistred = await _clinicPatientRepository.CheckAvailabilityAsync(patient.Id, request.clinicId);
         if (!isRegistred)
         {
-            var clinicPatient = ClinicPatientEntity.Create(patient, request.patient.clinicId, request.userId);
+            var clinicPatient = ClinicPatientEntity.Create(patient, request.clinicId, request.userId);
 
             if (clinicPatient.IsSuccess)
             {

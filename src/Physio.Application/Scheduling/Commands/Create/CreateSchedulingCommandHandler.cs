@@ -35,8 +35,14 @@ internal sealed class CreateSchedulingCommandHandler : IRequestHandler<CreateSch
 
         var schedulingStatus = await _statusSchedulingRepository.GetByEnumAsync(StatusSchedulingEnum.Agendado);
 
+        var newScheduling = SchedulingEntity.Create(request.scheduling.date, 
+                request.scheduling.patientId, 
+                request.scheduling.professionalId, 
+                schedulingStatus.Id,
+                request.scheduling.clinicId, 
+                request.userId
+        );
 
-        var newScheduling = SchedulingEntity.Create(request.scheduling.date, request.scheduling.patientId, request.scheduling.professionalId, schedulingStatus.Id, request.userId);
         if (newScheduling.IsSuccess)
         {
             await _schedulingRepository.CreateAsync(newScheduling.Value, cancellationToken);

@@ -24,7 +24,6 @@ public class ClinicProfessionalEndpoint : IEndpointDefinition
 
         routes.MapPost("/add-existing-professional", AddExistingProfessionalToClinic)
         .Produces<ProfessionalClinicResponse>(200);
-
     }
 
     private async Task<IResult> GetClinicProfessionals(IMediator mediator, [AsParameters] PaginatedRequest request, HttpContext httpContext)
@@ -45,10 +44,11 @@ public class ClinicProfessionalEndpoint : IEndpointDefinition
             TypedResults.BadRequest(result.Error);
     }
 
-    private async Task<IResult> AddExistingProfessionalToClinic(IMediator mediator, ClinicPatientAddExistingRequest request, HttpContext httpContext)
+    private async Task<IResult> AddExistingProfessionalToClinic(IMediator mediator, ProfessionalClinicAddExistingRequest request, HttpContext httpContext)
     {
         var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var result = await mediator.Send(new AddExistingPatientCommandHandler(request, Guid.Parse(userId)));
+        
+        var result = await mediator.Send(new AddExistingProfessionalCommand(request, Guid.Parse(userId)));
 
         return result.IsSuccess ?
             TypedResults.Ok(result.Value) :

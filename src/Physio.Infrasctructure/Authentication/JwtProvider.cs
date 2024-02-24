@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
@@ -18,7 +19,7 @@ internal sealed class JwtProvider : IJwtProvider
         _options = options.Value;
     }
 
-    public async Task<string> GenerateAsync(UserEntity user)
+    public async Task<string> GenerateAsync(UserEntity user, Guid? clinicId)
     {
         var claims = new List<Claim>
         {
@@ -27,6 +28,9 @@ internal sealed class JwtProvider : IJwtProvider
             new("accType", user.LoginType.ToString()),
             new("isRegistred", user.IsRegistred.ToString()),
         };
+
+        if (clinicId != null )
+            claims.Add(new("cln", clinicId.ToString()));
 
         //HashSet<string> permissions = await _permissionService
         //    .GetPermissionsAsync(Guid.Parse(user.Id));

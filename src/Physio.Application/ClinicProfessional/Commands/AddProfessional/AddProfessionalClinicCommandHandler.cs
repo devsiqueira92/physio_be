@@ -7,13 +7,13 @@ using Physio.Shared.Communications.Responses;
 
 namespace Physio.Application.ClinicProfessional.Commands.AddProfessional;
 
-internal sealed class AddProfessionalCommandHandler : IRequestHandler<AddProfessionalCommand, Result<ProfessionalClinicResponse>>
+internal sealed class AddProfessionalClinicCommandHandler : IRequestHandler<AddProfessionalCommand, Result<ProfessionalClinicResponse>>
 {
     private readonly IProfessionalClinicRepository _professionalClinicRepository;
     private readonly IProfessionalRepository _professionalRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AddProfessionalCommandHandler(IProfessionalClinicRepository professionalClinicRepository, IProfessionalRepository professionalRepository, IUnitOfWork unitOfWork)
+    public AddProfessionalClinicCommandHandler(IProfessionalClinicRepository professionalClinicRepository, IProfessionalRepository professionalRepository, IUnitOfWork unitOfWork)
     {
         _professionalClinicRepository = professionalClinicRepository;
         _professionalRepository = professionalRepository;

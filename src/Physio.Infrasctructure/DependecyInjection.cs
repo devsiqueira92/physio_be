@@ -49,6 +49,7 @@ public static class DependencyInjection
     {
         services.AddScoped<IJwtProvider, JwtProvider>()
                 .AddScoped<IClinicRepository, ClinicRepository>()
+                .AddScoped<IClinicPatientRepository, ClinicPatientRepository>()
                 
                 .AddScoped<IMedicalAppointmentRepository, MedicalAppointmentRepository>()
                 .AddScoped<IPatientRepository, PatientRepository>()

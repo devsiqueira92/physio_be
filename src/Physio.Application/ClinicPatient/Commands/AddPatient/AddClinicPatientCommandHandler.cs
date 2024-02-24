@@ -35,7 +35,7 @@ internal sealed class AddClinicPatientCommandHandler : IRequestHandler<AddClinic
 
         if (newPatient.IsSuccess)
         {
-            var clinicPatient = ClinicPatientEntity.Create(newPatient.Value, request.patient.clinicId, request.userId);
+            var clinicPatient = ClinicPatientEntity.Create(newPatient.Value, request.clinicId, request.userId);
 
             if (clinicPatient.IsSuccess)
             {
@@ -47,7 +47,7 @@ internal sealed class AddClinicPatientCommandHandler : IRequestHandler<AddClinic
                     newPatient.Value.Name,
                     newPatient.Value.BirthDate,
                     newPatient.Value.Contact,
-                    clinicPatient.Value.Id
+                    clinicPatient.Value.ClinicId
                 );
             }
         }

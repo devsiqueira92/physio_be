@@ -43,6 +43,15 @@ public class SchedulingEntityTypeConfiguration : IEntityTypeConfiguration<Schedu
         .HasForeignKey(p => p.SchedulingStatusId)
         .OnDelete(DeleteBehavior.NoAction);
 
+        builder.Property(f => f.ClinicId)
+        .HasColumnName("COD_CLINIC")
+        .HasMaxLength(36);
+
+        builder.HasOne(p => p.ClinicEntity)
+        .WithMany()
+        .HasForeignKey(p => p.ClinicId)
+        .OnDelete(DeleteBehavior.NoAction);
+
         builder.HasQueryFilter(x => !x.IsDeleted);
         //builder.HasIndex(f => f.RegisterNumber).IsUnique();
     }

@@ -6,4 +6,4 @@ using Physio.Shared.Communications.Responses;
 
 namespace Physio.Application.ClinicPatient.Commands.AddExistingPatient;
 
-public sealed record AddExistingPatientCommand(ClinicPatientAddExistingRequest patient, Guid userId) : IRequest<Result<ClinicPatientResponse>>;
+public sealed record AddExistingPatientCommand(ClinicPatientAddExistingRequest patient, Guid userId, Guid clinicId) : IRequest<Result<ClinicPatientResponse>>;

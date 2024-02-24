@@ -7,7 +7,7 @@ using Physio.Shared.Communications.Responses;
 
 namespace Physio.Application.ClinicProfessional.Commands.AddExistingProfessional;
 
-internal sealed class AddExistingProfessionalCommandHandler : IRequestHandler<AddExistingPatientCommandHandler, Result<ProfessionalClinicResponse>>
+internal sealed class AddExistingProfessionalCommandHandler : IRequestHandler<AddExistingProfessionalCommand, Result<ProfessionalClinicResponse>>
 {
     private readonly IProfessionalClinicRepository _professionalClinicRepository;
     private readonly IProfessionalRepository _professionalRepository;
@@ -20,9 +20,9 @@ internal sealed class AddExistingProfessionalCommandHandler : IRequestHandler<Ad
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<ProfessionalClinicResponse>> Handle(AddExistingPatientCommandHandler request, CancellationToken cancellationToken)
+    public async Task<Result<ProfessionalClinicResponse>> Handle(AddExistingProfessionalCommand request, CancellationToken cancellationToken)
     {
-        var professional = await _professionalRepository.GetAsync(request.professional.patientId);
+        var professional = await _professionalRepository.GetAsync(request.professional.professionalId);
 
         if (professional is null)
             return Result.Failure<ProfessionalClinicResponse>(DomainErrors.ProfessionalClinic.ProfessionalNotFound);
@@ -30,7 +30,7 @@ internal sealed class AddExistingProfessionalCommandHandler : IRequestHandler<Ad
         var isRegistred = await _professionalClinicRepository.CheckAvailabilityAsync(professional.Id, request.professional.clinicId);
         if (!isRegistred)
         {
-            var professionalClinic = ProfessionalClinicEntity.Create(professional, request.professional.clinicId, request.userId);
+            var professionalClinic = ProfessionalClinicEntity.Create(professional, request.professional.professionalId, request.userId);
 
             if (professionalClinic.IsSuccess)
             {

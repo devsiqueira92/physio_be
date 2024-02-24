@@ -1,5 +1,6 @@
 ﻿using Physio.Domain.Errors;
 using Physio.Domain.Shared;
+using static Physio.Domain.Errors.DomainErrors;
 
 namespace Physio.Domain.Entities;
 
@@ -15,7 +16,10 @@ public sealed class SchedulingEntity : BaseEntity
     public Guid SchedulingStatusId { get; set; }
     public StatusSchedulingEntity SchedulingStatusEntity { get; set; }
 
-    public static Result<SchedulingEntity> Create(DateTime date, Guid patientId, Guid professionalId, Guid schedulinglId, Guid userId)
+    public Guid? ClinicId { get; set; }
+    public ClinicEntity ClinicEntity { get; set; }
+
+    public static Result<SchedulingEntity> Create(DateTime date, Guid patientId, Guid professionalId, Guid schedulinglId, Guid? clinicId, Guid userId)
     {
         bool isInvalidDate = DateTime.UtcNow.CompareTo(date) > 0;
 
@@ -28,12 +32,13 @@ public sealed class SchedulingEntity : BaseEntity
             PatientId = patientId,
             ProfessionalId = professionalId,
             SchedulingStatusId = schedulinglId,
+            ClinicId = clinicId is not null ? clinicId : null,
             CreatedBy = userId
         };
     }
 
 
-    public Result Update(DateTime date, Guid patientId, Guid professionalId, Guid schedulinglId, Guid userId)
+    public Result Update(DateTime date, Guid patientId, Guid professionalId, Guid schedulinglId, Guid? clinicId, Guid userId)
     {
         bool isInvalidDate = DateTime.UtcNow.CompareTo(date) < 0;
 
@@ -43,6 +48,7 @@ public sealed class SchedulingEntity : BaseEntity
             PatientId = patientId;
             ProfessionalId = professionalId;
             SchedulingStatusId = schedulinglId;
+            ClinicId = clinicId is not null ? clinicId : null;
             UpdatedBy = userId;
             UpdatedOn = DateTime.UtcNow;
 

@@ -11,8 +11,6 @@ internal sealed class CreatePatientCommandHandler : IRequestHandler<CreatePatien
     private readonly IPatientRepository _patientRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-
-
     public CreatePatientCommandHandler(IPatientRepository patientRepository, IUnitOfWork unitOfWork)
     {
         _patientRepository = patientRepository;
@@ -32,6 +30,5 @@ internal sealed class CreatePatientCommandHandler : IRequestHandler<CreatePatien
         }
 
         return Result.Failure<PatientResponse>(newPatient.Error);
-
     }
 }

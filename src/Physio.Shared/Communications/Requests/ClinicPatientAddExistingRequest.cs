@@ -1,3 +1,3 @@
 ﻿namespace Physio.Shared.Communications.Requests;
 
-public record ClinicPatientAddExistingRequest(Guid patientId, Guid clinicId);
+public record ClinicPatientAddExistingRequest(Guid patientId);

@@ -541,6 +541,11 @@ namespace Physio.Infrasctructure.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("ID");
 
+                    b.Property<Guid?>("ClinicId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_CLINIC");
+
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("COD_CREATED_BY");
@@ -578,6 +583,8 @@ namespace Physio.Infrasctructure.Migrations
                         .HasColumnName("DAT_UPDATED_ON");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClinicId");
 
                     b.HasIndex("PatientId");
 
@@ -632,7 +639,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("016f13e5-e543-49f4-891d-ac2567ebf190"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 2, 24, 20, 46, 22, 634, DateTimeKind.Utc).AddTicks(1747),
+                            CreatedOn = new DateTime(2024, 2, 24, 22, 35, 3, 551, DateTimeKind.Utc).AddTicks(6539),
                             IsDeleted = false,
                             Name = "Cancelado",
                             Status = 1
@@ -641,7 +648,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("d3c26666-1e31-460e-ba5f-4310735358c9"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 2, 24, 20, 46, 22, 634, DateTimeKind.Utc).AddTicks(1751),
+                            CreatedOn = new DateTime(2024, 2, 24, 22, 35, 3, 551, DateTimeKind.Utc).AddTicks(6543),
                             IsDeleted = false,
                             Name = "Finalizado",
                             Status = 2
@@ -650,7 +657,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("267e1ac0-05db-4cd2-9cb3-a9f262aadde1"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 2, 24, 20, 46, 22, 634, DateTimeKind.Utc).AddTicks(1753),
+                            CreatedOn = new DateTime(2024, 2, 24, 22, 35, 3, 551, DateTimeKind.Utc).AddTicks(6545),
                             IsDeleted = false,
                             Name = "Remarcado",
                             Status = 3
@@ -659,7 +666,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("e0c50144-28e6-480a-b414-7ccb8c77aafe"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 2, 24, 20, 46, 22, 634, DateTimeKind.Utc).AddTicks(1755),
+                            CreatedOn = new DateTime(2024, 2, 24, 22, 35, 3, 551, DateTimeKind.Utc).AddTicks(6547),
                             IsDeleted = false,
                             Name = "Agendado",
                             Status = 4
@@ -886,6 +893,11 @@ namespace Physio.Infrasctructure.Migrations
 
             modelBuilder.Entity("Physio.Domain.Entities.SchedulingEntity", b =>
                 {
+                    b.HasOne("Physio.Domain.Entities.ClinicEntity", "ClinicEntity")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.HasOne("Physio.Domain.Entities.PatientEntity", "PatientEntity")
                         .WithMany()
                         .HasForeignKey("PatientId")
@@ -903,6 +915,8 @@ namespace Physio.Infrasctructure.Migrations
                         .HasForeignKey("SchedulingStatusId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("ClinicEntity");
 
                     b.Navigation("PatientEntity");
 

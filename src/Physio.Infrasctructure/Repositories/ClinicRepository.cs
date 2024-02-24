@@ -43,6 +43,17 @@ internal sealed class ClinicRepository : IClinicRepository
             .Where(cls => !cls.IsDeleted && cls.Id == id)
             .SingleOrDefaultAsync(cancellationToken);
 
+    public async Task<ClinicEntity> GetByUserIdAsync(string userId, CancellationToken cancellationToken = default) =>
+        await _context.Clinics
+                   .AsNoTracking()
+                    .Select(d => new ClinicEntity
+                    {
+                        Id = d.Id,
+                        UserId = d.UserId,
+                        IsDeleted = d.IsDeleted,
+                    })
+                   .Where(cls => !cls.IsDeleted && cls.UserId == userId).SingleOrDefaultAsync(cancellationToken);
+
 
     public async Task<bool> CheckAvailabilityAsync(string userId, CancellationToken cancellationToken = default) => 
         await _context.Clinics

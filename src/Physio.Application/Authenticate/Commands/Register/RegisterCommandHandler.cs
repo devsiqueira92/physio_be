@@ -35,7 +35,7 @@ internal sealed class RegisterCommandHandler : IRequestHandler<RegisterCommand, 
         if (user.Succeeded)
         {
             await _userManager.AddToRoleAsync(identityUser, accountType.ToString());
-            return new AuthenticationResponse(await _jwtProvider.GenerateAsync(identityUser));
+            return new AuthenticationResponse(await _jwtProvider.GenerateAsync(identityUser, null));
         }
         var error = user.Errors.First();
         return Result.Failure<AuthenticationResponse>(new Error(error.Code, error.Description));
