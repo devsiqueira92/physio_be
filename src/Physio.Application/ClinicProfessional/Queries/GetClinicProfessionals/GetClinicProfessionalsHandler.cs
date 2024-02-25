@@ -7,9 +7,9 @@ namespace Physio.Application.ClinicProfessional.Queries.GetClinicProfessionals;
 
 internal sealed class GetClinicProfessionalsHandler : IRequestHandler<GetClinicProfessionalsQuery, Result<List<ProfessionalResponse>>>
 {
-    private readonly IProfessionalClinicRepository _professionalClinicRepository;
+    private readonly IClinicProfessionalRepository _professionalClinicRepository;
 
-    public GetClinicProfessionalsHandler(IProfessionalClinicRepository professionalClinicRepository)
+    public GetClinicProfessionalsHandler(IClinicProfessionalRepository professionalClinicRepository)
     {
         _professionalClinicRepository = professionalClinicRepository;
     }

@@ -14,15 +14,15 @@ public class ClinicPatientEntityTypeConfiguration : IEntityTypeConfiguration<Cli
         builder.HasKey(pc => new { pc.PatientId, pc.ClinicId });
 
         builder.Property(f => f.PatientId)
-        .HasColumnName("COD_PATIENTS");
-
-
+        .HasMaxLength(36)
+        .HasColumnName("COD_PATIENT");
 
         builder.HasOne(pc => pc.PatientEntity)
         .WithMany(p => p.Clinics)
         .HasForeignKey(pc => pc.PatientId);
 
         builder.Property(f => f.ClinicId)
+        .HasMaxLength(36)
         .HasColumnName("COD_CLINIC");
 
         builder.HasOne(pc => pc.ClinicEntity)

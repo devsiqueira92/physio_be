@@ -5,15 +5,16 @@ using Physio.Domain.Entities;
 
 namespace Physio.Infrasctructure.Context.EntitiesConfiguration;
 
-public class ProfessionalClinicEntityTypeConfiguration : IEntityTypeConfiguration<ProfessionalClinicEntity>
+public class ClinicProfessionalEntityTypeConfiguration : IEntityTypeConfiguration<ClinicProfessionalEntity>
 {
-    public void Configure(EntityTypeBuilder<ProfessionalClinicEntity> builder)
+    public void Configure(EntityTypeBuilder<ClinicProfessionalEntity> builder)
     {
-        builder.ToTable("TB_PROFESSIONAL_CLINIC");
+        builder.ToTable("TB_CLINIC_PROFESSIONAL");
 
         builder.HasKey(pc => new { pc.ProfessionalId, pc.ClinicId });
 
         builder.Property(f => f.ProfessionalId)
+        .HasMaxLength(36)
         .HasColumnName("COD_PROFESSIONAL");
 
 
@@ -23,6 +24,7 @@ public class ProfessionalClinicEntityTypeConfiguration : IEntityTypeConfiguratio
         .HasForeignKey(pc => pc.ProfessionalId);
 
         builder.Property(f => f.ClinicId)
+        .HasMaxLength(36)
         .HasColumnName("COD_CLINIC");
 
         builder.HasOne(pc => pc.ClinicEntity)

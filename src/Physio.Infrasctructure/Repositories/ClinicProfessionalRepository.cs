@@ -5,24 +5,24 @@ using Physio.Infrasctructure.Context;
 
 namespace Physio.Infrastructure.Repositories;
 
-internal sealed class ProfessionalClinicRepository : IProfessionalClinicRepository
+internal sealed class ClinicProfessionalRepository : IClinicProfessionalRepository
 {
     private readonly PhysioContext _context;
-    public ProfessionalClinicRepository(PhysioContext context) => _context = context;
+    public ClinicProfessionalRepository(PhysioContext context) => _context = context;
 
-    public async Task CreateAsync(ProfessionalClinicEntity entity, CancellationToken cancellationToken = default) => 
+    public async Task CreateAsync(ClinicProfessionalEntity entity, CancellationToken cancellationToken = default) => 
         await _context.ProfessionalClinics.AddAsync(entity, cancellationToken);
 
 
-    public void Update(ProfessionalClinicEntity entity) =>
+    public void Update(ClinicProfessionalEntity entity) =>
         _context.ProfessionalClinics.Update(entity);
 
-    public async Task<List<ProfessionalClinicEntity>> GetAllAsync(int page, int pagesize, string userId, CancellationToken cancellationToken = default)
+    public async Task<List<ClinicProfessionalEntity>> GetAllAsync(int page, int pagesize, string userId, CancellationToken cancellationToken = default)
     {
         var query = _context.ProfessionalClinics
                     .AsNoTracking()
                     .Where(cls => cls.ClinicEntity.UserId == userId)
-                    .Select(d => new ProfessionalClinicEntity
+                    .Select(d => new ClinicProfessionalEntity
                     {
                         Id = d.Id,
                         ProfessionalId = d.ProfessionalId,
@@ -43,7 +43,7 @@ internal sealed class ProfessionalClinicRepository : IProfessionalClinicReposito
         return await query.ToListAsync(cancellationToken);
     }
 
-    public async Task<ProfessionalClinicEntity> GetAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<ClinicProfessionalEntity> GetAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var query = _context.ProfessionalClinics
                     .Where(cls => !cls.IsDeleted && cls.Id == id);

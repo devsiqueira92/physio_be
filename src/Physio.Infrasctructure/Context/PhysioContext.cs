@@ -16,9 +16,11 @@ internal class PhysioContext : IdentityDbContext<UserEntity>
     public DbSet<MedicalAppointmentEntity> MedicalAppointments { get; set; }
     public DbSet<StatusSchedulingEntity> SchedulingStatuses { get; set; }
     public DbSet<UserEntity> Users { get; set; }
-    public DbSet<ProfessionalClinicEntity> ProfessionalClinics { get; set; }
+    public DbSet<ClinicProfessionalEntity> ProfessionalClinics { get; set; }
     public DbSet<ClinicPatientEntity> ClinicPatients { get; set; }
     public DbSet<ClinicEntity> Clinics { get; set; }
+    public DbSet<AddressEntity> Addresses { get; set; }
+    public DbSet<ContactEntity> Contacts { get; set; }
 
     public PhysioContext(DbContextOptions<PhysioContext> options) : base(options) { }
 
@@ -26,18 +28,21 @@ internal class PhysioContext : IdentityDbContext<UserEntity>
     {
         base.OnModelCreating(modelBuilder);
 
+        new AddressEntityTypeConfiguration().Configure(modelBuilder.Entity<AddressEntity>());
+        new ContactEntityTypeConfiguration().Configure(modelBuilder.Entity<ContactEntity>());
+
+        new ClinicEntityTypeConfiguration().Configure(modelBuilder.Entity<ClinicEntity>());
+        new ClinicPatientEntityTypeConfiguration().Configure(modelBuilder.Entity<ClinicPatientEntity>());
+        new ClinicProfessionalEntityTypeConfiguration().Configure(modelBuilder.Entity<ClinicProfessionalEntity>());
+
+        new MedicalAppointmentEntityTypeConfiguration().Configure(modelBuilder.Entity<MedicalAppointmentEntity>());
+
         new PatientEntityTypeConfiguration().Configure(modelBuilder.Entity<PatientEntity>());
         new ProtocolEntityTypeConfiguration().Configure(modelBuilder.Entity<ProtocolEntity>());
         new ProfessionalEntityTypeConfiguration().Configure(modelBuilder.Entity<ProfessionalEntity>());
         
         new SchedulingEntityTypeConfiguration().Configure(modelBuilder.Entity<SchedulingEntity>());
         new StatusSchedulingEntityTypeConfiguration().Configure(modelBuilder.Entity<StatusSchedulingEntity>());
-
-        new MedicalAppointmentEntityTypeConfiguration().Configure(modelBuilder.Entity<MedicalAppointmentEntity>());
-        new ProfessionalClinicEntityTypeConfiguration().Configure(modelBuilder.Entity<ProfessionalClinicEntity>());
-
-        new ClinicEntityTypeConfiguration().Configure(modelBuilder.Entity<ClinicEntity>());
-        new ClinicPatientEntityTypeConfiguration().Configure(modelBuilder.Entity<ClinicPatientEntity>());
 
 
         var clinicRole = new RoleEntity { Id= "ca29a123-1a4b-4d75-84eb-6f39dd886f70", Name = "Clinic", NormalizedName = "CLINIC" };

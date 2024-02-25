@@ -37,6 +37,7 @@ public class MedicalAppointmentEntityTypeConfiguration : IEntityTypeConfiguratio
 
         builder.Property(f => f.SchedulingId)
         .HasColumnName("COD_SCHEDULING")
+        .HasMaxLength(36)
         .IsRequired();
 
         builder.HasOne(p => p.SchedulingEntity)

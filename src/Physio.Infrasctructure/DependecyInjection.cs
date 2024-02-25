@@ -53,7 +53,7 @@ public static class DependencyInjection
                 
                 .AddScoped<IMedicalAppointmentRepository, MedicalAppointmentRepository>()
                 .AddScoped<IPatientRepository, PatientRepository>()
-                .AddScoped<IProfessionalClinicRepository, ProfessionalClinicRepository>()
+                .AddScoped<IClinicProfessionalRepository, ClinicProfessionalRepository>()
                 .AddScoped<IProfessionalRepository, ProfessionalRepository>()
                 .AddScoped<IProtocolRepository, ProtocolRepository>()
                 .AddScoped<ISchedulingRepository, SchedulingRepository>()

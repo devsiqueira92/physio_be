@@ -16,6 +16,7 @@ public class SchedulingEntityTypeConfiguration : IEntityTypeConfiguration<Schedu
 
         builder.Property(f => f.PatientId)
         .HasColumnName("COD_PATIENT")
+        .HasMaxLength(36)
         .IsRequired();
 
         builder.HasOne(p => p.PatientEntity)
@@ -26,6 +27,7 @@ public class SchedulingEntityTypeConfiguration : IEntityTypeConfiguration<Schedu
 
         builder.Property(f => f.ProfessionalId)
         .HasColumnName("COD_PROFESSIONAL")
+        .HasMaxLength(36)
         .IsRequired();
 
         builder.HasOne(p => p.ProfessionalEntity)
@@ -36,6 +38,7 @@ public class SchedulingEntityTypeConfiguration : IEntityTypeConfiguration<Schedu
 
         builder.Property(f => f.SchedulingStatusId)
         .HasColumnName("COD_SCHEDULING_STATUS")
+        .HasMaxLength(36)
         .IsRequired();
 
         builder.HasOne(p => p.SchedulingStatusEntity)

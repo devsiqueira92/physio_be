@@ -15,7 +15,8 @@ public class StatusSchedulingEntityTypeConfiguration : IEntityTypeConfiguration<
         .IsRequired();
 
         builder.Property(f => f.Status)
-       .HasColumnName("COD_STATUS");
+        .HasMaxLength(36)
+        .HasColumnName("COD_STATUS");
 
         builder.HasQueryFilter(x => !x.IsDeleted);
         //builder.HasIndex(f => f.RegisterNumber).IsUnique();

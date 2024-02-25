@@ -9,11 +9,11 @@ namespace Physio.Application.ClinicProfessional.Commands.AddProfessional;
 
 internal sealed class AddProfessionalClinicCommandHandler : IRequestHandler<AddProfessionalCommand, Result<ProfessionalClinicResponse>>
 {
-    private readonly IProfessionalClinicRepository _professionalClinicRepository;
+    private readonly IClinicProfessionalRepository _professionalClinicRepository;
     private readonly IProfessionalRepository _professionalRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AddProfessionalClinicCommandHandler(IProfessionalClinicRepository professionalClinicRepository, IProfessionalRepository professionalRepository, IUnitOfWork unitOfWork)
+    public AddProfessionalClinicCommandHandler(IClinicProfessionalRepository professionalClinicRepository, IProfessionalRepository professionalRepository, IUnitOfWork unitOfWork)
     {
         _professionalClinicRepository = professionalClinicRepository;
         _professionalRepository = professionalRepository;
@@ -37,7 +37,7 @@ internal sealed class AddProfessionalClinicCommandHandler : IRequestHandler<AddP
 
         if (newProfessional.IsSuccess)
         {
-            var professionalClinic = ProfessionalClinicEntity.Create(newProfessional.Value, request.professional.clinicId, request.userId);
+            var professionalClinic = ClinicProfessionalEntity.Create(newProfessional.Value, request.professional.clinicId, request.userId);
 
             if (newProfessional.IsSuccess)
             {

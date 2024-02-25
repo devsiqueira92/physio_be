@@ -9,11 +9,11 @@ namespace Physio.Application.ClinicProfessional.Commands.AddExistingProfessional
 
 internal sealed class AddExistingProfessionalCommandHandler : IRequestHandler<AddExistingProfessionalCommand, Result<ProfessionalClinicResponse>>
 {
-    private readonly IProfessionalClinicRepository _professionalClinicRepository;
+    private readonly IClinicProfessionalRepository _professionalClinicRepository;
     private readonly IProfessionalRepository _professionalRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AddExistingProfessionalCommandHandler(IProfessionalClinicRepository professionalClinicRepository, IProfessionalRepository professionalRepository, IUnitOfWork unitOfWork)
+    public AddExistingProfessionalCommandHandler(IClinicProfessionalRepository professionalClinicRepository, IProfessionalRepository professionalRepository, IUnitOfWork unitOfWork)
     {
         _professionalClinicRepository = professionalClinicRepository;
         _professionalRepository = professionalRepository;
@@ -30,7 +30,7 @@ internal sealed class AddExistingProfessionalCommandHandler : IRequestHandler<Ad
         var isRegistred = await _professionalClinicRepository.CheckAvailabilityAsync(professional.Id, request.professional.clinicId);
         if (!isRegistred)
         {
-            var professionalClinic = ProfessionalClinicEntity.Create(professional, request.professional.professionalId, request.userId);
+            var professionalClinic = ClinicProfessionalEntity.Create(professional, request.professional.professionalId, request.userId);
 
             if (professionalClinic.IsSuccess)
             {

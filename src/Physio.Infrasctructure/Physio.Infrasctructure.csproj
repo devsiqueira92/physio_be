@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Physio.Application\Physio.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
