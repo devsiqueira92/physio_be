@@ -4,5 +4,5 @@ namespace Physio.Domain.RepositoryInterfaces;
 
 public interface IUserRepository
 {
-    Task RegisterUser(string id, CancellationToken cancellationToken);
+    Task<UserEntity> RegisterUser(string id, CancellationToken cancellationToken);
 }

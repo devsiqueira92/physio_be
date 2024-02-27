@@ -30,6 +30,10 @@ public static class DomainErrors
         public static readonly Error ProfessionalAlreadyRegistred = new(
             "Professional.ProfessionalAlreadyRegistred",
             "Professional already registred.");
+
+        public static readonly Error ProfessionalNotFound = new(
+         "Professional.ProfessionalNotFound",
+         "Professional not found.");
     }
 
 
@@ -60,6 +64,10 @@ public static class DomainErrors
         public static readonly Error ClinicAlreadyRegistred = new(
             "Clinic.ClinicAlreadyRegistred",
             "Clinic already registred.");
+
+        public static readonly Error ClinicNotFound = new(
+           "Clinic.ClinicNotFound",
+           "Clinic not found.");
     }
 
     public static class Scheduling

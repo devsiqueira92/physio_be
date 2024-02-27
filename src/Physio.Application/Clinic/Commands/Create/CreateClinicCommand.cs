@@ -6,4 +6,4 @@ using Physio.Shared.Communications.Responses;
 
 namespace Physio.Application.Clinic.Commands.Create;
 
-public sealed record CreateClinicCommand(ClinicCreateRequest clinic, Guid userId) : IRequest<Result<ClinicResponse>>;
+public sealed record CreateClinicCommand(ClinicCreateRequest clinic, Guid userId) : IRequest<Result<AuthenticationResponse>>;

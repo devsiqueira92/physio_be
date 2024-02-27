@@ -1,5 +1,5 @@
 ﻿
 namespace Physio.Shared.Communications.Requests;
 
-public record ContactCreateRequest(string number, string type);
+public record ContactCreateRequest(string contact, string type);
 

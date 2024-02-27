@@ -23,7 +23,7 @@ internal sealed class GetClinicPatientsHandler : IRequestHandler<GetClinicPatien
 
         var list = patientsOfClinic.Select(
                 clinic => new PatientResponse(
-                    clinic.Id,
+                    clinic.PatientId,
                     clinic.PatientEntity.Name,
                     clinic.PatientEntity.Contact,
                     clinic.PatientEntity.BirthDate

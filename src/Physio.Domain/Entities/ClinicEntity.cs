@@ -5,8 +5,6 @@ namespace Physio.Domain.Entities;
 public sealed class ClinicEntity : BaseEntity
 {
     public string Name { get; set; }
-    public string Address { get; set; }
-    public string Contact { get; set; }
     public string IdentificationNumber { get; set; }
     public string UserId { get; set; }
     public UserEntity UserEntity { get; set; }
@@ -19,9 +17,7 @@ public sealed class ClinicEntity : BaseEntity
         return new ClinicEntity { 
             Name = name, 
             UserId = userId.ToString(), 
-            Address = address,
-            Contact = identificationNumber,
-            IdentificationNumber = name,
+            IdentificationNumber = identificationNumber,
             CreatedBy = userId,
         };
     }
@@ -30,9 +26,7 @@ public sealed class ClinicEntity : BaseEntity
     {
         Name = name;
         UpdatedBy = userId;
-        Address = address;
-        Contact = identificationNumber;
-        IdentificationNumber = name;
+        IdentificationNumber = identificationNumber;
         UpdatedOn = DateTime.UtcNow;
     }
 }

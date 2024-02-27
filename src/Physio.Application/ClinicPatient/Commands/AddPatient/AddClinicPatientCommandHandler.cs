@@ -10,32 +10,38 @@ namespace Physio.Application.ClinicPatient.Commands.AddPatient;
 internal sealed class AddClinicPatientCommandHandler : IRequestHandler<AddClinicPatientCommand, Result<ClinicPatientResponse>>
 {
     private readonly IClinicPatientRepository _clinicPatientRepository;
+    private readonly IClinicRepository _clinicRepository;
     private readonly IPatientRepository _patientRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AddClinicPatientCommandHandler(IClinicPatientRepository clinicPatientRepository, IPatientRepository patientRepository, IUnitOfWork unitOfWork)
+    public AddClinicPatientCommandHandler(IClinicPatientRepository clinicPatientRepository, IClinicRepository clinicRepository, IPatientRepository patientRepository, IUnitOfWork unitOfWork)
     {
         _clinicPatientRepository = clinicPatientRepository;
         _patientRepository = patientRepository;
+        _clinicRepository = clinicRepository;
         _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<ClinicPatientResponse>> Handle(AddClinicPatientCommand request, CancellationToken cancellationToken)
     {
         var hasPatient = await _patientRepository.FindByDocumentNumberAsync(request.patient.contact);
-
         if (hasPatient)
             return Result.Failure<ClinicPatientResponse>(DomainErrors.ProfessionalClinic.ProfessionalAlreadyRegistred);
+
+        var clinic = await _clinicRepository.GetUserIdAsync(request.userId.ToString());
+        if (clinic is null)
+            return Result.Failure<ClinicPatientResponse>(DomainErrors.Clinic.ClinicNotFound);
 
         var newPatient = PatientEntity.Create(request.patient.name,
                 request.patient.birthDate,
                 request.patient.contact,
+                request.patient.identificationNumber,
                 request.userId
             );
 
         if (newPatient.IsSuccess)
         {
-            var clinicPatient = ClinicPatientEntity.Create(newPatient.Value, request.clinicId, request.userId);
+            var clinicPatient = ClinicPatientEntity.Create(newPatient.Value, clinic.Id, request.userId);
 
             if (clinicPatient.IsSuccess)
             {

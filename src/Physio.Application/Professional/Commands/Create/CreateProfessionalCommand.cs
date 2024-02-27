@@ -6,4 +6,4 @@ using Physio.Shared.Communications.Responses;
 
 namespace Physio.Application.Professional.Commands.Create;
 
-public sealed record CreateProfessionalCommand(ProfessionalCreateRequest professional, Guid userId) : IRequest<Result<ProfessionalResponse>>;
+public sealed record CreateProfessionalCommand(ProfessionalCreateRequest professional, Guid userId) : IRequest<Result<AuthenticationResponse>>;

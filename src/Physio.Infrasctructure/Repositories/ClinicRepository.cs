@@ -24,9 +24,7 @@ internal sealed class ClinicRepository : IClinicRepository
                     .Select(d => new ClinicEntity
                     {
                         Name = d.Name,
-                        Address= d.Address,
                         IdentificationNumber = d.IdentificationNumber,
-                        Contact = d.Contact,
                         Id = d.Id,
                         IsDeleted = d.IsDeleted,
                         CreatedOn = d.CreatedOn,
@@ -49,10 +47,28 @@ internal sealed class ClinicRepository : IClinicRepository
                     .Select(d => new ClinicEntity
                     {
                         Id = d.Id,
-                        UserId = d.UserId,
                         IsDeleted = d.IsDeleted,
+                        Name = d.Name,
+                        UserId = d.UserId,
+                        IdentificationNumber = d.IdentificationNumber,
+                        CreatedOn = d.CreatedOn,
+                        UserEntity = new UserEntity
+                        {
+                            LoginType = d.UserEntity.LoginType,
+                        }
                     })
                    .Where(cls => !cls.IsDeleted && cls.UserId == userId).SingleOrDefaultAsync(cancellationToken);
+
+    public async Task<ClinicEntity> GetUserIdAsync(string userId, CancellationToken cancellationToken = default) =>
+       await _context.Clinics
+                  .AsNoTracking()
+                   .Select(d => new ClinicEntity
+                   {
+                       Id = d.Id,
+                       UserId = d.UserId,
+                       IsDeleted = d.IsDeleted,
+                   })
+                  .Where(cls => !cls.IsDeleted && cls.UserId == userId).SingleOrDefaultAsync(cancellationToken);
 
 
     public async Task<bool> CheckAvailabilityAsync(string userId, CancellationToken cancellationToken = default) => 

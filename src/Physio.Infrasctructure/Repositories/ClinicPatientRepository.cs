@@ -26,6 +26,7 @@ internal sealed class ClinicPatientRepository : IClinicPatientRepository
                     {
                         Id = d.Id,
                         PatientId = d.PatientId,
+                        ClinicId = d.ClinicId,
                         PatientEntity = new PatientEntity
                         {
                             Name = d.PatientEntity.Name,

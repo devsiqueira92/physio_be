@@ -1,12 +1,12 @@
 ﻿using Physio.Domain.Errors;
 using Physio.Domain.Shared;
-using static Physio.Domain.Errors.DomainErrors;
 
 namespace Physio.Domain.Entities;
 
 public sealed class SchedulingEntity : BaseEntity
 {
     public DateTime Date { get; set; }
+    public string SchedulingType { get; set; }
     public Guid PatientId { get; set; }
     public PatientEntity PatientEntity { get; set; }
 

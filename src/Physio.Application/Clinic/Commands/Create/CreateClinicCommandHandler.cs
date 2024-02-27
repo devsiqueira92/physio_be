@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Physio.Application.Abstractions;
 using Physio.Domain.Entities;
 using Physio.Domain.Errors;
 using Physio.Domain.RepositoryInterfaces;
@@ -7,24 +8,26 @@ using Physio.Shared.Communications.Responses;
 
 namespace Physio.Application.Clinic.Commands.Create;
 
-internal sealed class CreateClinicCommandHandler : IRequestHandler<CreateClinicCommand, Result<ClinicResponse>>
+internal sealed class CreateClinicCommandHandler : IRequestHandler<CreateClinicCommand, Result<AuthenticationResponse>>
 {
     private readonly IClinicRepository _clinicRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IJwtProvider _jwtProvider;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateClinicCommandHandler(IClinicRepository clinicRepository, IUserRepository userRepository, IUnitOfWork unitOfWork)
+    public CreateClinicCommandHandler(IClinicRepository clinicRepository, IUserRepository userRepository, IJwtProvider jwtProvider, IUnitOfWork unitOfWork)
     {
         _clinicRepository = clinicRepository;
         _userRepository = userRepository;
+        _jwtProvider = jwtProvider;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<ClinicResponse>> Handle(CreateClinicCommand request, CancellationToken cancellationToken)
+    public async Task<Result<AuthenticationResponse>> Handle(CreateClinicCommand request, CancellationToken cancellationToken)
     {
         var userIsUnavailable = await _clinicRepository.CheckAvailabilityAsync(request.userId.ToString(), cancellationToken);
         if (userIsUnavailable)
-            return Result.Failure<ClinicResponse>(DomainErrors.Clinic.ClinicAlreadyRegistred);
+            return Result.Failure<AuthenticationResponse>(DomainErrors.Clinic.ClinicAlreadyRegistred);
 
         var newClinic = ClinicEntity.Create(
                 request.clinic.name,
@@ -37,20 +40,15 @@ internal sealed class CreateClinicCommandHandler : IRequestHandler<CreateClinicC
         if (newClinic.IsSuccess)
         {
             await _clinicRepository.CreateAsync(newClinic.Value, cancellationToken);
-            await _userRepository.RegisterUser(request.userId.ToString(), cancellationToken);
+            var user = await _userRepository.RegisterUser(request.userId.ToString(), cancellationToken);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return new ClinicResponse(
-                newClinic.Value.Id,
-                newClinic.Value.Name
-                //newClinic.Value.BirthDate,
-                //newClinic.Value.Contact,
-                //newClinic.Value.RegisterNumber,
-                //newClinic.Value.AppointmentValue
-            );
+            var renewToken = await _jwtProvider.GenerateAsync(user, newClinic.Value.Id);
+
+            return new AuthenticationResponse(renewToken);
         }
 
-        return Result.Failure<ClinicResponse>(newClinic.Error);
+        return Result.Failure<AuthenticationResponse>(newClinic.Error);
     }
 }

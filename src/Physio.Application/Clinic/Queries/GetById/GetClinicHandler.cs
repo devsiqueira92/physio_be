@@ -25,10 +25,6 @@ internal sealed class GetClinicHandler : IRequestHandler<GetClinicQuery, Result<
             return new ClinicResponse(
                     clinic.Id,
                     clinic.Name
-                    //clinic.BirthDate,
-                    //clinic.Contact,
-                    //clinic.RegisterNumber,
-                    //clinic.AppointmentValue
                 );
     }
 }

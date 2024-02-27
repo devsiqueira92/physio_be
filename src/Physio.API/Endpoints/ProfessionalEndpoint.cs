@@ -1,10 +1,10 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Physio.API.Configurations;
 using Physio.API.Filters;
 using Physio.Application.Professional.Commands.Create;
 using Physio.Application.Professional.Commands.Delete;
 using Physio.Application.Professional.Commands.Update;
+using Physio.Application.Professional.Queries.GetAccount;
 using Physio.Application.Professional.Queries.GetAll;
 using Physio.Application.Professional.Queries.GetById;
 using Physio.Shared.Communications.Requests;
@@ -23,6 +23,10 @@ public class ProfessionalEndpoint : IEndpointDefinition
         .Produces(404)
         .Produces<List<ProfessionalResponse>>(200);
 
+        routes.MapGet("/account", GetAccount)
+        .Produces(404)
+        .Produces<AccountResponse>(200);
+
         routes.MapGet("/{id}", GetProfessionalById)
         .WithName(nameof(GetProfessionalById))
         .Produces<ProfessionalResponse>(201);
@@ -34,13 +38,7 @@ public class ProfessionalEndpoint : IEndpointDefinition
         routes.MapDelete("/{id}", Delete)
         .Produces(204);
 
-        //criar profissional independente, onde este irá ter um userID associado e ClinicId null
         routes.MapPost("/create", Create)
-        .Produces<ProfessionalResponse>(200)
-        .AddEndpointFilter<ValidationFilter<ProfessionalCreateRequest>>();
-
-        //criar profissional para uma clinica, onde este irá ter um clinicId associado e userId null
-        routes.MapPost("/create-clinic-professional", Create)
         .Produces<ProfessionalResponse>(200)
         .AddEndpointFilter<ValidationFilter<ProfessionalCreateRequest>>();
     }
@@ -48,6 +46,13 @@ public class ProfessionalEndpoint : IEndpointDefinition
     private async Task<IResult> Get(IMediator mediator, [AsParameters] PaginatedRequest request)
     {
         var result = await mediator.Send(new GetProfessionalsQuery(request.pageSize, request.pageNumber));
+        return result.IsSuccess ? TypedResults.Ok(result.Value) : TypedResults.NoContent();
+    }
+
+    private async Task<IResult> GetAccount(IMediator mediator, HttpContext httpContext)
+    {
+        var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var result = await mediator.Send(new GetAccountQuery(userId));
         return result.IsSuccess ? TypedResults.Ok(result.Value) : TypedResults.NoContent();
     }
 
@@ -65,7 +70,7 @@ public class ProfessionalEndpoint : IEndpointDefinition
         var result = await mediator.Send(new CreateProfessionalCommand(request, Guid.Parse(userId)));
 
         return result.IsSuccess ?
-            TypedResults.CreatedAtRoute(result.Value, nameof(GetProfessionalById), new { id = result.Value.id }) :
+            TypedResults.Ok(result.Value) :
             TypedResults.BadRequest(result.Error);
     }
 

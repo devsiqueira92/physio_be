@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Physio.Domain.Entities;
 using Physio.Domain.RepositoryInterfaces;
 using Physio.Infrasctructure.Context;
 
@@ -11,7 +12,7 @@ internal sealed class UserRepository : IUserRepository
 
 
 
-    public async Task RegisterUser(string id, CancellationToken cancellationToken = default)
+    public async Task<UserEntity> RegisterUser(string id, CancellationToken cancellationToken = default)
     {
         var query = _context.Users
                    .Where(cls => cls.Id == id);
@@ -21,5 +22,6 @@ internal sealed class UserRepository : IUserRepository
         user.IsRegistred = true;
 
         _context.Users.Update(user);
+        return user;
     }
 }

@@ -22,7 +22,7 @@ internal sealed class UpdatePatientCommandHandler : IRequestHandler<UpdatePatien
         var patient = await _patientRepository.GetAsync(request.patient.id);
         if (patient is not null)
         {
-            patient.Update(request.patient.name, request.patient.birthDate, request.patient.contact, request.userId);
+            patient.Update(request.patient.name, request.patient.birthDate, request.patient.contact, request.patient.identificationNumber, request.userId);
 
             _patientRepository.Update(patient);
 

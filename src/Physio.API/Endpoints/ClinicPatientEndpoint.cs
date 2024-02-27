@@ -40,9 +40,8 @@ public class ClinicPatientEndpoint : IEndpointDefinition
     private async Task<IResult> AddPatientToClinic(IMediator mediator, ClinicPatientCreateRequest request, HttpContext httpContext)
     {
         var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var clinicId = httpContext.User.FindFirst("cln")?.Value;
 
-        var result = await mediator.Send(new AddClinicPatientCommand(request, Guid.Parse(userId), Guid.Parse(clinicId)));
+        var result = await mediator.Send(new AddClinicPatientCommand(request, Guid.Parse(userId)));
 
         return result.IsSuccess ?
             TypedResults.Ok(result.Value) :
@@ -52,9 +51,8 @@ public class ClinicPatientEndpoint : IEndpointDefinition
     private async Task<IResult> AddExistingPatientToClinic(IMediator mediator, ClinicPatientAddExistingRequest request, HttpContext httpContext)
     {
         var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var clinicId = httpContext.User.FindFirst("cln")?.Value;
 
-        var result = await mediator.Send(new AddExistingPatientCommand(request, Guid.Parse(userId), Guid.Parse(clinicId)));
+        var result = await mediator.Send(new AddExistingPatientCommand(request, Guid.Parse(userId)));
 
         return result.IsSuccess ?
             TypedResults.Ok(result.Value) :

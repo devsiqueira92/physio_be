@@ -30,7 +30,7 @@ internal sealed class AuthenticateCommandHandler : IRequestHandler<AuthenticateC
             bool isValid = await _userManager.CheckPasswordAsync(user, request.credentials.password);
             if (isValid)
             {
-                var clinic = await _clinicRepository.GetByUserIdAsync(user.Id);
+                var clinic = await _clinicRepository.GetUserIdAsync(user.Id);
                 string token = await _jwtProvider.GenerateAsync(user, clinic?.Id);
                 return new AuthenticationResponse(token);
             }

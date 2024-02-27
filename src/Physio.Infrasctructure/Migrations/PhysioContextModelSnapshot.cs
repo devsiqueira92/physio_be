@@ -176,11 +176,6 @@ namespace Physio.Infrasctructure.Migrations
                         .HasColumnType("nvarchar(40)")
                         .HasColumnName("TXT_CITY");
 
-                    b.Property<Guid?>("ClinicId")
-                        .HasMaxLength(36)
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("COD_CLINIC");
-
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("COD_CREATED_BY");
@@ -199,20 +194,10 @@ namespace Physio.Infrasctructure.Migrations
                         .HasColumnType("nvarchar(6)")
                         .HasColumnName("TXT_NUMBER");
 
-                    b.Property<Guid?>("PatientId")
-                        .HasMaxLength(36)
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("COD_PATIENT");
-
                     b.Property<string>("PostalCode")
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)")
                         .HasColumnName("TXT_POSTAL_CODE");
-
-                    b.Property<Guid?>("ProfessionalId")
-                        .HasMaxLength(36)
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("COD_PROFESSIONAL");
 
                     b.Property<string>("Street")
                         .IsRequired()
@@ -228,13 +213,13 @@ namespace Physio.Infrasctructure.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("DAT_UPDATED_ON");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("COD_USER");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ClinicId");
-
-                    b.HasIndex("PatientId");
-
-                    b.HasIndex("ProfessionalId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("TB_ADDRESS", (string)null);
                 });
@@ -244,17 +229,6 @@ namespace Physio.Infrasctructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("ID");
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)")
-                        .HasColumnName("TXT_ADDRESS");
-
-                    b.Property<string>("Contact")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)")
-                        .HasColumnName("TXT_CONTACT");
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier")
@@ -346,16 +320,54 @@ namespace Physio.Infrasctructure.Migrations
                     b.ToTable("TB_CLINIC_PATIENT", (string)null);
                 });
 
+            modelBuilder.Entity("Physio.Domain.Entities.ClinicProfessionalEntity", b =>
+                {
+                    b.Property<Guid>("ProfessionalId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_PROFESSIONAL");
+
+                    b.Property<Guid>("ClinicId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_CLINIC");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_CREATED_BY");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DAT_CREATED_ON");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ID");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("FLG_IS_DELETED");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_UPDATED_BY");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DAT_UPDATED_ON");
+
+                    b.HasKey("ProfessionalId", "ClinicId");
+
+                    b.HasIndex("ClinicId");
+
+                    b.ToTable("TB_CLINIC_PROFESSIONAL", (string)null);
+                });
+
             modelBuilder.Entity("Physio.Domain.Entities.ContactEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("ID");
-
-                    b.Property<Guid?>("ClinicId")
-                        .HasMaxLength(36)
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("COD_CLINIC");
 
                     b.Property<string>("Contact")
                         .HasMaxLength(20)
@@ -374,16 +386,6 @@ namespace Physio.Infrasctructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("FLG_IS_DELETED");
 
-                    b.Property<Guid?>("PatientId")
-                        .HasMaxLength(36)
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("COD_PATIENT");
-
-                    b.Property<Guid?>("ProfessionalId")
-                        .HasMaxLength(36)
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("COD_PROFESSIONAL");
-
                     b.Property<string>("Type")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
@@ -397,13 +399,13 @@ namespace Physio.Infrasctructure.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("DAT_UPDATED_ON");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("COD_USER");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ClinicId");
-
-                    b.HasIndex("PatientId");
-
-                    b.HasIndex("ProfessionalId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("TB_CONTACT", (string)null);
                 });
@@ -499,6 +501,11 @@ namespace Physio.Infrasctructure.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("DAT_CREATED_ON");
 
+                    b.Property<string>("IdentificationNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("TXT_IDENTIFICATION_NUMBER");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
                         .HasColumnName("FLG_IS_DELETED");
@@ -518,50 +525,10 @@ namespace Physio.Infrasctructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IdentificationNumber")
+                        .IsUnique();
+
                     b.ToTable("TB_PATIENT", (string)null);
-                });
-
-            modelBuilder.Entity("Physio.Domain.Entities.ProfessionalClinicEntity", b =>
-                {
-                    b.Property<Guid>("ProfessionalId")
-                        .HasMaxLength(36)
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("COD_PROFESSIONAL");
-
-                    b.Property<Guid>("ClinicId")
-                        .HasMaxLength(36)
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("COD_CLINIC");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("COD_CREATED_BY");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("DAT_CREATED_ON");
-
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("ID");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit")
-                        .HasColumnName("FLG_IS_DELETED");
-
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("COD_UPDATED_BY");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("DAT_UPDATED_ON");
-
-                    b.HasKey("ProfessionalId", "ClinicId");
-
-                    b.HasIndex("ClinicId");
-
-                    b.ToTable("TB_CLINIC_PROFESSIONAL", (string)null);
                 });
 
             modelBuilder.Entity("Physio.Domain.Entities.ProfessionalEntity", b =>
@@ -579,7 +546,6 @@ namespace Physio.Infrasctructure.Migrations
                         .HasColumnName("DAT_BIRTH_DATE");
 
                     b.Property<string>("Contact")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)")
                         .HasColumnName("TXT_CONTACT");
@@ -719,6 +685,11 @@ namespace Physio.Infrasctructure.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("COD_SCHEDULING_STATUS");
 
+                    b.Property<string>("SchedulingType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("COD_SCHEDULING_TYPE");
+
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("COD_UPDATED_BY");
@@ -785,7 +756,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("016f13e5-e543-49f4-891d-ac2567ebf190"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 2, 25, 1, 9, 49, 754, DateTimeKind.Utc).AddTicks(942),
+                            CreatedOn = new DateTime(2024, 2, 26, 21, 33, 26, 560, DateTimeKind.Utc).AddTicks(3211),
                             IsDeleted = false,
                             Name = "Cancelado",
                             Status = 1
@@ -794,7 +765,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("d3c26666-1e31-460e-ba5f-4310735358c9"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 2, 25, 1, 9, 49, 754, DateTimeKind.Utc).AddTicks(946),
+                            CreatedOn = new DateTime(2024, 2, 26, 21, 33, 26, 560, DateTimeKind.Utc).AddTicks(3215),
                             IsDeleted = false,
                             Name = "Finalizado",
                             Status = 2
@@ -803,7 +774,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("267e1ac0-05db-4cd2-9cb3-a9f262aadde1"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 2, 25, 1, 9, 49, 754, DateTimeKind.Utc).AddTicks(948),
+                            CreatedOn = new DateTime(2024, 2, 26, 21, 33, 26, 560, DateTimeKind.Utc).AddTicks(3217),
                             IsDeleted = false,
                             Name = "Remarcado",
                             Status = 3
@@ -812,7 +783,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("e0c50144-28e6-480a-b414-7ccb8c77aafe"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 2, 25, 1, 9, 49, 754, DateTimeKind.Utc).AddTicks(950),
+                            CreatedOn = new DateTime(2024, 2, 26, 21, 33, 26, 560, DateTimeKind.Utc).AddTicks(3219),
                             IsDeleted = false,
                             Name = "Agendado",
                             Status = 4
@@ -970,26 +941,12 @@ namespace Physio.Infrasctructure.Migrations
 
             modelBuilder.Entity("Physio.Domain.Entities.AddressEntity", b =>
                 {
-                    b.HasOne("Physio.Domain.Entities.ClinicEntity", "ClinicEntity")
+                    b.HasOne("Physio.Domain.Entities.UserEntity", "UserEntity")
                         .WithMany()
-                        .HasForeignKey("ClinicId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("Physio.Domain.Entities.PatientEntity", "PatientEntity")
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("Physio.Domain.Entities.ProfessionalEntity", "ProfessionalEntity")
-                        .WithMany()
-                        .HasForeignKey("ProfessionalId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("ClinicEntity");
-
-                    b.Navigation("PatientEntity");
-
-                    b.Navigation("ProfessionalEntity");
+                    b.Navigation("UserEntity");
                 });
 
             modelBuilder.Entity("Physio.Domain.Entities.ClinicEntity", b =>
@@ -1021,42 +978,7 @@ namespace Physio.Infrasctructure.Migrations
                     b.Navigation("PatientEntity");
                 });
 
-            modelBuilder.Entity("Physio.Domain.Entities.ContactEntity", b =>
-                {
-                    b.HasOne("Physio.Domain.Entities.ClinicEntity", "ClinicEntity")
-                        .WithMany()
-                        .HasForeignKey("ClinicId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("Physio.Domain.Entities.PatientEntity", "PatientEntity")
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("Physio.Domain.Entities.ProfessionalEntity", "ProfessionalEntity")
-                        .WithMany()
-                        .HasForeignKey("ProfessionalId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("ClinicEntity");
-
-                    b.Navigation("PatientEntity");
-
-                    b.Navigation("ProfessionalEntity");
-                });
-
-            modelBuilder.Entity("Physio.Domain.Entities.MedicalAppointmentEntity", b =>
-                {
-                    b.HasOne("Physio.Domain.Entities.SchedulingEntity", "SchedulingEntity")
-                        .WithMany()
-                        .HasForeignKey("SchedulingId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("SchedulingEntity");
-                });
-
-            modelBuilder.Entity("Physio.Domain.Entities.ProfessionalClinicEntity", b =>
+            modelBuilder.Entity("Physio.Domain.Entities.ClinicProfessionalEntity", b =>
                 {
                     b.HasOne("Physio.Domain.Entities.ClinicEntity", "ClinicEntity")
                         .WithMany("Professionals")
@@ -1073,6 +995,27 @@ namespace Physio.Infrasctructure.Migrations
                     b.Navigation("ClinicEntity");
 
                     b.Navigation("ProfessionalEntity");
+                });
+
+            modelBuilder.Entity("Physio.Domain.Entities.ContactEntity", b =>
+                {
+                    b.HasOne("Physio.Domain.Entities.UserEntity", "UserEntity")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("UserEntity");
+                });
+
+            modelBuilder.Entity("Physio.Domain.Entities.MedicalAppointmentEntity", b =>
+                {
+                    b.HasOne("Physio.Domain.Entities.SchedulingEntity", "SchedulingEntity")
+                        .WithMany()
+                        .HasForeignKey("SchedulingId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("SchedulingEntity");
                 });
 
             modelBuilder.Entity("Physio.Domain.Entities.ProfessionalEntity", b =>

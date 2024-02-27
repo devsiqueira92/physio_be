@@ -1,5 +1,5 @@
 ﻿
 namespace Physio.Shared.Communications.Requests;
 
-public record ContactUpdateRequest(Guid id, string number, string type);
+public record ContactUpdateRequest(Guid id, string contact, string type);
 

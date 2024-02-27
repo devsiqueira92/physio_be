@@ -14,12 +14,11 @@ public sealed class ProfessionalEntity : PersonEntity
 
     public ICollection<ClinicProfessionalEntity> Clinics { get; set; }
 
-    public static Result<ProfessionalEntity> Create(string name, DateOnly birthDate, string contact, string registerNumber, decimal appointmentValue, Guid userId) =>
+    public static Result<ProfessionalEntity> Create(string name, DateOnly birthDate, string registerNumber, decimal appointmentValue, Guid userId) =>
         new ProfessionalEntity
         {
             Name = name,
             BirthDate = birthDate,
-            Contact = contact,
             RegisterNumber = registerNumber,
             AppointmentValue = appointmentValue,
             UserId = userId.ToString(),

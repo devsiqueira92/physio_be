@@ -14,6 +14,10 @@ public class SchedulingEntityTypeConfiguration : IEntityTypeConfiguration<Schedu
         .HasColumnName("DAT_DATE")
         .IsRequired();
 
+        builder.Property(f => f.SchedulingType)
+        .HasColumnName("COD_SCHEDULING_TYPE")
+        .IsRequired();
+
         builder.Property(f => f.PatientId)
         .HasColumnName("COD_PATIENT")
         .HasMaxLength(36)

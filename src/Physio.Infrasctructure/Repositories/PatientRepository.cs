@@ -47,11 +47,29 @@ internal sealed class PatientRepository : IPatientRepository
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
 
+    public async Task<PatientEntity> GetByIdentificationNumberAsync(string identificationNumber, CancellationToken cancellationToken = default)
+    {
+        var query = _context.Patients.AsNoTracking()
+                    .Select(cls => new PatientEntity
+                    {
+                        Contact = cls.Contact,
+                        IdentificationNumber = cls.IdentificationNumber,
+                        BirthDate = cls.BirthDate,
+                        Id = cls.Id,
+                        Name = cls.Name,
+                        IsDeleted=cls.IsDeleted,    
+
+                    })
+                    .Where(cls => !cls.IsDeleted && cls.IdentificationNumber == identificationNumber);
+
+        return await query.SingleOrDefaultAsync(cancellationToken);
+    }
+
     public async Task<bool> FindByDocumentNumberAsync(string documentNumber, CancellationToken cancellationToken = default)
     {
         return await _context.Patients
                     .AsNoTracking()
-                    .Where(cls => !cls.IsDeleted && cls.Contact == documentNumber).AnyAsync(cancellationToken);
+                    .Where(cls => !cls.IsDeleted && cls.IdentificationNumber == documentNumber).AnyAsync(cancellationToken);
 
     }
 }

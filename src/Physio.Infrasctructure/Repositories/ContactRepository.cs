@@ -17,31 +17,11 @@ internal sealed class ContactRepository : IContactRepository
     public void Update(ContactEntity entity) =>
         _context.Contacts.Update(entity);
 
-    public async Task<List<ContactEntity>> GetPatientContactsAsync(int page, int pageSize, Guid patientId, CancellationToken cancellationToken = default)
-    {
-        var query = _context.Contacts
-                   .AsNoTracking()
-                   .Where(cls => cls.PatientId == patientId)
-                   .Select(d => new ContactEntity
-                   {
-                       Id = d.Id,
-                       IsDeleted = d.IsDeleted,
-                       CreatedOn = d.CreatedOn,
-                       Type = d.Type,
-                       Contact = d.Contact,
-                   })
-                   .OrderBy(status => status.CreatedOn)
-                   .Skip((page - 1) * pageSize)
-                   .Take(pageSize);
-
-        return await query.ToListAsync(cancellationToken);
-    }
-
-    public async Task<List<ContactEntity>> GetProfessionalContactsAsync(int page, int pageSize, Guid professionalId, CancellationToken cancellationToken = default)
+    public async Task<List<ContactEntity>> GetContactListAsync(string userId, CancellationToken cancellationToken = default)
     {
         var query = _context.Contacts
                     .AsNoTracking()
-                    .Where(cls => cls.PatientId == professionalId)
+                    .Where(c => c.UserId == userId)
                     .Select(d => new ContactEntity
                     {
                         Id = d.Id,
@@ -50,30 +30,27 @@ internal sealed class ContactRepository : IContactRepository
                         Type = d.Type,
                         Contact = d.Contact,
                     })
-                    .OrderBy(status => status.CreatedOn)
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize);
+                    .OrderByDescending(status => status.CreatedOn);
 
         return await query.ToListAsync(cancellationToken);
     }
 
-    public async Task<List<ContactEntity>> GetClinicContactsAsync(int page, int pageSize, Guid clinicId, CancellationToken cancellationToken = default)
+    public async Task<ContactEntity> GetAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var query = _context.Contacts
-                    .AsNoTracking()
-                    .Where(cls => cls.PatientId == clinicId)
-                    .Select(d => new ContactEntity
-                    {
-                        Id = d.Id,
-                        IsDeleted = d.IsDeleted,
-                        CreatedOn = d.CreatedOn,
-                        Type = d.Type,
-                        Contact = d.Contact,
-                    })
-                    .OrderBy(status => status.CreatedOn)
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize);
+                     .AsNoTracking()
+                     .Where(c => c.Id == id)
+                     .Select(d => new ContactEntity
+                     {
+                         Id = d.Id,
+                         IsDeleted = d.IsDeleted,
+                         CreatedOn = d.CreatedOn,
+                         Type = d.Type,
+                         Contact = d.Contact,
+                         UserId = d.UserId,
+                         CreatedBy = d.CreatedBy,
+                     });
 
-        return await query.ToListAsync(cancellationToken);
+        return await query.SingleOrDefaultAsync(cancellationToken);
     }
 }

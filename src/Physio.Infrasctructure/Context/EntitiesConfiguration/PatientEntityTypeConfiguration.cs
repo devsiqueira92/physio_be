@@ -22,8 +22,12 @@ public class PatientEntityTypeConfiguration : IEntityTypeConfiguration<PatientEn
         .HasColumnName("TXT_CONTACT")
         .IsRequired();
 
+        builder.Property(f => f.IdentificationNumber)
+       .HasColumnName("TXT_IDENTIFICATION_NUMBER")
+       .IsRequired();
 
-        //builder.HasIndex(b => b.BloodType).IsUnique();
+
+        builder.HasIndex(b => b.IdentificationNumber).IsUnique();
         builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }

@@ -61,4 +61,41 @@ internal sealed class ProfessionalRepository : IProfessionalRepository
 
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
+
+    public async Task<ProfessionalEntity> GetByUserIdAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        var query = _context.Professionals
+                    .Select(d => new ProfessionalEntity
+                    {
+                        UserId = d.UserId,
+                        Id = d.Id,
+                        Name = d.Name,
+                        RegisterNumber = d.RegisterNumber,
+                        BirthDate = d.BirthDate,
+                        AppointmentValue = d.AppointmentValue,
+                        CreatedOn = d.CreatedOn,
+                        IsDeleted = d.IsDeleted,
+                        UserEntity = new UserEntity
+                        {
+                            LoginType = d.UserEntity.LoginType,
+                        },
+                        
+                    })
+                   .Where(cls => !cls.IsDeleted && cls.UserId == userId);
+
+        return await query.SingleOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<ProfessionalEntity> GetUserIdAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        var query = _context.Professionals
+                    .Select(d => new ProfessionalEntity
+                    {
+                        UserId = d.UserId,
+                        IsDeleted = d.IsDeleted,
+                    })
+                   .Where(cls => !cls.IsDeleted && cls.UserId == userId);
+
+        return await query.SingleOrDefaultAsync(cancellationToken);
+    }
 }

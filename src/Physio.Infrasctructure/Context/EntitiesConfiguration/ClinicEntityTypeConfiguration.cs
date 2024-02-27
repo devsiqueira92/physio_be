@@ -14,15 +14,6 @@ public class ClinicEntityTypeConfiguration : IEntityTypeConfiguration<ClinicEnti
         .HasColumnName("TXT_NAME")
         .IsRequired();
 
-        builder.Property(f => f.Address)
-        .HasColumnName("TXT_ADDRESS")
-        .HasMaxLength(40);
-
-        builder.Property(f => f.Contact)
-        .HasColumnName("TXT_CONTACT")
-        .HasMaxLength(15)
-        .IsRequired();
-
         builder.Property(f => f.IdentificationNumber)
         .HasColumnName("TXT_IDENTIFICATION_NUMBER")
         .HasMaxLength(20)

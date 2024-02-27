@@ -6,6 +6,7 @@ using Physio.Application.Patient.Commands.Delete;
 using Physio.Application.Patient.Commands.Update;
 using Physio.Application.Patient.Queries.GetAll;
 using Physio.Application.Patient.Queries.GetById;
+using Physio.Application.Patient.Queries.GetByIdentificationNumber;
 using Physio.Shared.Communications.Requests;
 using Physio.Shared.Communications.Responses;
 using System.Security.Claims;
@@ -24,7 +25,10 @@ public class PatientEndpoint : IEndpointDefinition
 
         routes.MapGet("/{id}", GetPatientById)
         .WithName(nameof(GetPatientById))
-        .Produces<PatientResponse>(201);
+        .Produces<PatientResponse>(200);
+
+        routes.MapGet("search/{id}", GetPatientByDocument)
+        .Produces<PatientResponse>(200);
 
         routes.MapPost("/create", Create)
         .Produces<PatientResponse>(200)
@@ -49,6 +53,13 @@ public class PatientEndpoint : IEndpointDefinition
         var result = await mediator.Send(new GetPatientQuery(id));
 
         return result.IsSuccess ? TypedResults.Ok(result.Value) : TypedResults.BadRequest(result.Error);
+    }
+
+    private async Task<IResult> GetPatientByDocument(IMediator mediator, string id)
+    {
+        var result = await mediator.Send(new GetByIdentificationNumberQuery(id));
+
+        return result.IsSuccess ? TypedResults.Ok(result.Value) : TypedResults.Empty;
     }
 
     private async Task<IResult> Create(IMediator mediator, PatientCreateRequest request, HttpContext httpContext)

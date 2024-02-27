@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Physio.API.Configurations;
 using Physio.API.Filters;
 using Physio.Application.Clinic.Commands.Create;
 using Physio.Application.Clinic.Commands.Delete;
 using Physio.Application.Clinic.Commands.Update;
+using Physio.Application.Clinic.Queries.GetAccount;
 using Physio.Application.Clinic.Queries.GetAll;
 using Physio.Application.Clinic.Queries.GetById;
 using Physio.Shared.Communications.Requests;
@@ -19,6 +21,10 @@ public class ClinicEndpoint : IEndpointDefinition
 		var routes = app.MapGroup("api/clinic");
 
         routes.MapGet("/", Get)
+        .Produces(404)
+        .Produces<List<ClinicResponse>>(200);
+
+        routes.MapGet("/account", GetAccount)
         .Produces(404)
         .Produces<List<ClinicResponse>>(200);
 
@@ -44,6 +50,13 @@ public class ClinicEndpoint : IEndpointDefinition
         return result.IsSuccess ? TypedResults.Ok(result.Value) : TypedResults.NoContent();
     }
 
+    private async Task<IResult> GetAccount(IMediator mediator, HttpContext httpContext)
+    {
+        var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var result = await mediator.Send(new GetAccountQuery(userId));
+        return result.IsSuccess ? TypedResults.Ok(result.Value) : TypedResults.NoContent();
+    }
+
     private async Task<IResult> GetClinicById(IMediator mediator, string id)
     {
         var result = await mediator.Send(new GetClinicQuery(id));
@@ -58,7 +71,7 @@ public class ClinicEndpoint : IEndpointDefinition
         var result = await mediator.Send(new CreateClinicCommand(request, Guid.Parse(userId)));
 
         return result.IsSuccess ?
-            TypedResults.CreatedAtRoute(result.Value, nameof(GetClinicById), new { id = result.Value.id }) :
+            TypedResults.Ok(result.Value) :
             TypedResults.BadRequest(result.Error);
     }
 

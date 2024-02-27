@@ -17,11 +17,42 @@ internal sealed class AddressRepository : IAddressRepository
     public void Update(AddressEntity entity) =>
         _context.Addresses.Update(entity);
 
-    public async Task<List<AddressEntity>> GetPatientAddressesAsync(int page, int pageSize, Guid patientId, CancellationToken cancellationToken = default)
+    public async Task<List<AddressEntity>> GetAddressListAsync(string userId, CancellationToken cancellationToken = default)
     {
         var query = _context.Addresses
                    .AsNoTracking()
-                   .Where(cls => cls.PatientId == patientId)
+                   .Where(c => c.UserId == userId)
+                   .Select(d => new AddressEntity
+                   {
+                       Id = d.Id,
+                       IsDeleted = d.IsDeleted,
+                       CreatedOn = d.CreatedOn,
+                       UserId = userId,
+                       City = d.City,
+                       PostalCode = d.PostalCode,   
+                       Street = d.Street,   
+                       Number = d.Number,
+                       
+                   })
+                   .OrderByDescending(status => status.CreatedOn);
+
+        return await query.ToListAsync(cancellationToken);
+    }
+
+
+
+
+
+
+
+    //example porpouse only. Try in another circustances
+    public async Task<object> GetPatientAddressesUsingCursorAsync(int page, int pageSize, Guid patientId, CancellationToken cancellationToken = default)
+    {
+        DateTime? createdOnCursor = new DateTime(2022, 10, 12);
+
+        var query = await _context.Addresses
+                   .AsNoTracking()
+                   //.Where(cls => cls.PatientId == patientId && cls.CreatedOn > createdOnCursor)
                    .Select(d => new AddressEntity
                    {
                        Id = d.Id,
@@ -34,52 +65,14 @@ internal sealed class AddressRepository : IAddressRepository
                    })
                    .OrderBy(status => status.CreatedOn)
                    .Skip((page - 1) * pageSize)
-                   .Take(pageSize);
+                   .Take(pageSize)
+                   .ToListAsync(cancellationToken);
 
-        return await query.ToListAsync(cancellationToken);
+        //store on cache/localStorage
+        var nextCursor = query[^1].CreatedOn;
+
+        return (query, nextCursor);
     }
 
-    public async Task<List<AddressEntity>> GetProfessionalAddressesAsync(int page, int pageSize, Guid professionalId, CancellationToken cancellationToken = default)
-    {
-        var query = _context.Addresses
-                    .AsNoTracking()
-                    .Where(cls => cls.PatientId == professionalId)
-                    .Select(d => new AddressEntity
-                    {
-                        Id = d.Id,
-                        IsDeleted = d.IsDeleted,
-                        CreatedOn = d.CreatedOn,
-                        Number = d.Number,
-                        PostalCode = d.PostalCode,
-                        Street = d.Street,
-                        City = d.City
-                    })
-                    .OrderBy(status => status.CreatedOn)
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize);
 
-        return await query.ToListAsync(cancellationToken);
-    }
-
-    public async Task<List<AddressEntity>> GetClinicAddressesAsync(int page, int pageSize, Guid clinicId, CancellationToken cancellationToken = default)
-    {
-        var query = _context.Addresses
-                    .AsNoTracking()
-                    .Where(cls => cls.PatientId == clinicId)
-                    .Select(d => new AddressEntity
-                    {
-                        Id = d.Id,
-                        IsDeleted = d.IsDeleted,
-                        CreatedOn = d.CreatedOn,
-                        Number = d.Number,
-                        PostalCode = d.PostalCode,
-                        Street = d.Street,
-                        City = d.City
-                    })
-                    .OrderBy(status => status.CreatedOn)
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize);
-
-        return await query.ToListAsync(cancellationToken);
-    }
 }

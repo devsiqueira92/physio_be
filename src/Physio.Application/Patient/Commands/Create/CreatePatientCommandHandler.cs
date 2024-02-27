@@ -19,7 +19,7 @@ internal sealed class CreatePatientCommandHandler : IRequestHandler<CreatePatien
 
     public async Task<Result<PatientResponse>> Handle(CreatePatientCommand request, CancellationToken cancellationToken)
     {
-        var newPatient = PatientEntity.Create(request.patient.name, request.patient.birthDate, request.patient.contact, request.userId);
+        var newPatient = PatientEntity.Create(request.patient.name, request.patient.birthDate, request.patient.contact, request.patient.identificationNumber, request.userId);
         if (newPatient.IsSuccess)
         {
             await _patientRepository.CreateAsync(newPatient.Value, cancellationToken);

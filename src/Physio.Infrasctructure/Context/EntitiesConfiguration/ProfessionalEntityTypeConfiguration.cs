@@ -20,8 +20,7 @@ public class ProfessionalEntityTypeConfiguration : IEntityTypeConfiguration<Prof
 
         builder.Property(f => f.Contact)
        .HasColumnName("TXT_CONTACT")
-       .HasMaxLength(15)
-       .IsRequired();
+       .HasMaxLength(15);
 
         builder.Property(f => f.AppointmentValue)
         .HasColumnName("DEC_APPOINTMENT_VALUE")

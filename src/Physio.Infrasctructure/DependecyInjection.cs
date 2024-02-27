@@ -48,6 +48,8 @@ public static class DependencyInjection
     private static void AddRepositories(IServiceCollection services)
     {
         services.AddScoped<IJwtProvider, JwtProvider>()
+                .AddScoped<IAddressRepository, AddressRepository>()
+                .AddScoped<IContactRepository, ContactRepository>()
                 .AddScoped<IClinicRepository, ClinicRepository>()
                 .AddScoped<IClinicPatientRepository, ClinicPatientRepository>()
                 

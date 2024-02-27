@@ -10,4 +10,6 @@ public interface IProfessionalRepository
     Task<ProfessionalEntity> GetAsync(Guid id, CancellationToken cancellationToken = default);
     Task<bool> CheckAvailabilityAsync(string userId, CancellationToken cancellationToken = default);
     Task<ProfessionalEntity> FindByRegisterNumberAsync(string registerNumber, CancellationToken cancellationToken = default);
+    Task<ProfessionalEntity> GetByUserIdAsync(string userId, CancellationToken cancellationToken = default);
+    Task<ProfessionalEntity> GetUserIdAsync(string userId, CancellationToken cancellationToken = default);
 }
