@@ -1,4 +1,4 @@
 ﻿
 namespace Physio.Shared.Communications.Responses;
 
-public record PatientResponse(Guid? id = null, string? name = null, string? contact = null, DateOnly? birthDate = null);
+public record PatientResponse(Guid id, string name, string contact, string identificationNumber, DateOnly birthDate );

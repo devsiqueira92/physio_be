@@ -21,7 +21,7 @@ internal sealed class GetPatientsHandler : IRequestHandler<GetPatientsQuery, Res
             if (!patients.Any())
                 return Result.Failure<List<PatientResponse>>(null);
 
-            var list = patients.Select(patient => new PatientResponse(patient.Id, patient.Name, patient.Contact, patient.BirthDate)).ToList();
+            var list = patients.Select(patient => new PatientResponse(patient.Id, patient.Name, patient.Contact, patient.IdentificationNumber, patient.BirthDate)).ToList();
 
             return new List<PatientResponse>(list);
     }

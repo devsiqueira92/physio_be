@@ -47,6 +47,7 @@ internal sealed class SchedulingRepository : ISchedulingRepository
                         PatientId = d.PatientId,
                         ProfessionalId = d.ProfessionalId,
                         SchedulingStatusId = d.SchedulingStatusId,
+                        SchedulingType = d.SchedulingType,
                         Id = d.Id,
                         CreatedOn = d.CreatedOn,
                     });
@@ -64,6 +65,7 @@ internal sealed class SchedulingRepository : ISchedulingRepository
                         PatientId = d.PatientId,
                         ProfessionalId = d.ProfessionalId,
                         SchedulingStatusId = d.SchedulingStatusId,
+                        SchedulingType = d.SchedulingType,
                         SchedulingStatusEntity = new StatusSchedulingEntity
                         {
                             Name = d.SchedulingStatusEntity.Name,

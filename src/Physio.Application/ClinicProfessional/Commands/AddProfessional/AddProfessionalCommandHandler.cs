@@ -11,12 +11,14 @@ internal sealed class AddProfessionalCommandHandler : IRequestHandler<AddProfess
 {
     private readonly IClinicProfessionalRepository _professionalClinicRepository;
     private readonly IProfessionalRepository _professionalRepository;
+    private readonly IClinicRepository _clinicRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AddProfessionalCommandHandler(IClinicProfessionalRepository professionalClinicRepository, IProfessionalRepository professionalRepository, IUnitOfWork unitOfWork)
+    public AddProfessionalCommandHandler(IClinicProfessionalRepository professionalClinicRepository, IProfessionalRepository professionalRepository, IClinicRepository clinicRepository, IUnitOfWork unitOfWork)
     {
         _professionalClinicRepository = professionalClinicRepository;
         _professionalRepository = professionalRepository;
+        _clinicRepository = clinicRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -26,6 +28,10 @@ internal sealed class AddProfessionalCommandHandler : IRequestHandler<AddProfess
 
         if (hasProfessional is not null)
             return Result.Failure<ProfessionalClinicResponse>(DomainErrors.ProfessionalClinic.ProfessionalAlreadyRegistred);
+
+        var clinic = await _clinicRepository.GetUserIdAsync(request.userId.ToString());
+        if (clinic is null)
+            return Result.Failure<ProfessionalClinicResponse>(DomainErrors.Clinic.ClinicNotFound);
 
         var newProfessional = ProfessionalEntity.CreateAsProfessionalClinic(request.professional.name,
                 request.professional.birthDate,
@@ -37,7 +43,7 @@ internal sealed class AddProfessionalCommandHandler : IRequestHandler<AddProfess
 
         if (newProfessional.IsSuccess)
         {
-            var professionalClinic = ClinicProfessionalEntity.Create(newProfessional.Value, request.professional.clinicId, request.userId);
+            var professionalClinic = ClinicProfessionalEntity.Create(newProfessional.Value, clinic.Id, request.userId);
 
             if (newProfessional.IsSuccess)
             {

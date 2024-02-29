@@ -26,6 +26,7 @@ internal sealed class GetClinicPatientsHandler : IRequestHandler<GetClinicPatien
                     clinic.PatientId,
                     clinic.PatientEntity.Name,
                     clinic.PatientEntity.Contact,
+                    clinic.PatientEntity.IdentificationNumber,
                     clinic.PatientEntity.BirthDate
                 )
             ).ToList();

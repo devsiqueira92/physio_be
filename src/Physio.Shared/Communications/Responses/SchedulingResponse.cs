@@ -9,6 +9,7 @@ public record SchedulingResponse(Guid id,
         string patientName = null, 
         string patientContact = null, 
         DateOnly? patientBirthDate = null, 
+        string schedulingType = null, 
         string professionalName = null, 
         string schedulingStatus = null
 );

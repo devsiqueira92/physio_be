@@ -19,7 +19,7 @@ public sealed class SchedulingEntity : BaseEntity
     public Guid? ClinicId { get; set; }
     public ClinicEntity ClinicEntity { get; set; }
 
-    public static Result<SchedulingEntity> Create(DateTime date, Guid patientId, Guid professionalId, Guid schedulinglId, Guid? clinicId, Guid userId)
+    public static Result<SchedulingEntity> Create(DateTime date, Guid patientId, Guid professionalId, Guid schedulinglId, Guid? clinicId, string schedulingType, Guid userId)
     {
         bool isInvalidDate = DateTime.UtcNow.CompareTo(date) > 0;
 
@@ -32,13 +32,14 @@ public sealed class SchedulingEntity : BaseEntity
             PatientId = patientId,
             ProfessionalId = professionalId,
             SchedulingStatusId = schedulinglId,
+            SchedulingType = schedulingType,
             ClinicId = clinicId is not null ? clinicId : null,
             CreatedBy = userId
         };
     }
 
 
-    public Result Update(DateTime date, Guid patientId, Guid professionalId, Guid schedulinglId, Guid? clinicId, Guid userId)
+    public Result Update(DateTime date, Guid patientId, Guid professionalId, Guid schedulinglId, Guid? clinicId, string schedulingType, Guid userId)
     {
         bool isInvalidDate = DateTime.UtcNow.CompareTo(date) < 0;
 
@@ -48,6 +49,7 @@ public sealed class SchedulingEntity : BaseEntity
             PatientId = patientId;
             ProfessionalId = professionalId;
             SchedulingStatusId = schedulinglId;
+            SchedulingType = schedulingType;
             ClinicId = clinicId is not null ? clinicId : null;
             UpdatedBy = userId;
             UpdatedOn = DateTime.UtcNow;

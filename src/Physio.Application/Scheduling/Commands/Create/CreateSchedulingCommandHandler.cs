@@ -39,7 +39,8 @@ internal sealed class CreateSchedulingCommandHandler : IRequestHandler<CreateSch
                 request.scheduling.patientId, 
                 request.scheduling.professionalId, 
                 schedulingStatus.Id,
-                request.scheduling.clinicId, 
+                request.scheduling.clinicId,
+                request.scheduling.schedulingType,
                 request.userId
         );
 

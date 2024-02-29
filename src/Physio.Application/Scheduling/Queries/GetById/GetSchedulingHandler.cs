@@ -30,6 +30,7 @@ internal sealed class GetSchedulingHandler : IRequestHandler<GetSchedulingQuery,
                     scheduling.PatientEntity.Name,
                     scheduling.PatientEntity.Contact,
                     scheduling.PatientEntity.BirthDate,
+                    scheduling.SchedulingType,
 
                     scheduling.ProfessionalEntity.Name, 
                     scheduling.SchedulingStatusEntity.Name

@@ -26,7 +26,7 @@ internal sealed class CreatePatientCommandHandler : IRequestHandler<CreatePatien
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return new PatientResponse(newPatient.Value.Id, newPatient.Value.Name, newPatient.Value.Contact, newPatient.Value.BirthDate);
+            return new PatientResponse(newPatient.Value.Id, newPatient.Value.Name, newPatient.Value.Contact, newPatient.Value.IdentificationNumber, newPatient.Value.BirthDate);
         }
 
         return Result.Failure<PatientResponse>(newPatient.Error);

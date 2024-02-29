@@ -17,11 +17,11 @@ internal sealed class GetByIdentificationNumberHandler : IRequestHandler<GetById
 
     public async Task<Result<PatientResponse>> Handle(GetByIdentificationNumberQuery request, CancellationToken cancellationToken)
     {
-            var patient = await _patientRepository.GetByIdentificationNumberAsync(request.identificationNumber, cancellationToken);
+        var patient = await _patientRepository.GetByIdentificationNumberAsync(request.identificationNumber, cancellationToken);
 
-            if (patient is null)
-                return Result.Failure<PatientResponse>(DomainErrors.Generic.NotFound);
+        if (patient is null)
+            return Result.Failure<PatientResponse>(DomainErrors.Generic.NotFound);
 
-            return new PatientResponse(patient.Id, patient.Name, patient.Contact, patient.BirthDate);
+        return new PatientResponse(patient.Id, patient.Name, patient.Contact, patient.IdentificationNumber, patient.BirthDate);
     }
 }

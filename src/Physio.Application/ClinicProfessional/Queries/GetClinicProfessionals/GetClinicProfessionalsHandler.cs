@@ -23,7 +23,7 @@ internal sealed class GetClinicProfessionalsHandler : IRequestHandler<GetClinicP
 
         var list = professionalsOfClinic.Select(
                 clinic => new ProfessionalResponse(
-                    clinic.Id,
+                    clinic.ProfessionalId,
                     clinic.ProfessionalEntity.Name,
                     clinic.ProfessionalEntity.BirthDate,
                     clinic.ProfessionalEntity.Contact,

@@ -22,6 +22,6 @@ internal sealed class GetPatientHandler : IRequestHandler<GetPatientQuery, Resul
             if (patient is null)
                 return Result.Failure<PatientResponse>(DomainErrors.Generic.NotFound);
 
-            return new PatientResponse(patient.Id, patient.Name, patient.Contact, patient.BirthDate);
+            return new PatientResponse(patient.Id, patient.Name, patient.Contact, patient.IdentificationNumber, patient.BirthDate);
     }
 }
