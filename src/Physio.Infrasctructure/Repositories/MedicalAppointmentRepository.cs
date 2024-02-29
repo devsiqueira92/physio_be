@@ -17,9 +17,10 @@ internal sealed class MedicalAppointmentRepository : IMedicalAppointmentReposito
     public void Update(MedicalAppointmentEntity entity) =>
         _context.MedicalAppointments.Update(entity);
 
-    public async Task<List<MedicalAppointmentEntity>> GetAllAsync(int page, int pagesize, CancellationToken cancellationToken = default)
+    public async Task<List<MedicalAppointmentEntity>> GetAllAsync(int page, int pagesize, string id, CancellationToken cancellationToken = default)
     {
         var query = _context.MedicalAppointments
+                    .Where(cls => cls.SchedulingEntity.ProfessionalEntity.UserId == id || cls.SchedulingEntity.ClinicEntity.UserId == id)
                     .AsNoTracking()
                     .Select(d => new MedicalAppointmentEntity
                     {
@@ -35,13 +36,16 @@ internal sealed class MedicalAppointmentRepository : IMedicalAppointmentReposito
                         SchedulingEntity = new SchedulingEntity
                         {
                             Date = d.SchedulingEntity.Date,
-                            PatientEntity = new PatientEntity { Name = d.SchedulingEntity.PatientEntity.Name },
-                            ProfessionalEntity = new ProfessionalEntity { Name = d.SchedulingEntity.ProfessionalEntity.Name },
+                            PatientEntity = new PatientEntity { 
+                                Name = d.SchedulingEntity.PatientEntity.Name 
+                            },
+                            ProfessionalEntity = new ProfessionalEntity { 
+                                Name = d.SchedulingEntity.ProfessionalEntity.Name, 
+                                UserId = d.SchedulingEntity.ProfessionalEntity.UserId
+                            },
                         },
                     })
-                    .OrderByDescending(status => status.CreatedOn)
-                    .Skip((page - 1) * pagesize)
-                    .Take(pagesize);
+                    .OrderByDescending(status => status.CreatedOn);
 
         return await query.ToListAsync(cancellationToken);
     }

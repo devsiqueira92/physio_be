@@ -363,6 +363,76 @@ namespace Physio.Infrasctructure.Migrations
                     b.ToTable("TB_CLINIC_PROFESSIONAL", (string)null);
                 });
 
+            modelBuilder.Entity("Physio.Domain.Entities.ClinicSchedulingEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ID");
+
+                    b.Property<Guid>("ClinicId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_CLINIC");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_CREATED_BY");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DAT_CREATED_ON");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DAT_DATE");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("FLG_IS_DELETED");
+
+                    b.Property<Guid>("PatientId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_PATIENT");
+
+                    b.Property<Guid>("ProfessionalId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_PROFESSIONAL");
+
+                    b.Property<Guid>("SchedulingStatusId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_SCHEDULING_STATUS");
+
+                    b.Property<Guid>("SchedulingTypeId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_SCHEDULING_TYPE");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_UPDATED_BY");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DAT_UPDATED_ON");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClinicId");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("ProfessionalId");
+
+                    b.HasIndex("SchedulingStatusId");
+
+                    b.HasIndex("SchedulingTypeId");
+
+                    b.ToTable("TB_CLINIC_SCHEDULING", (string)null);
+                });
+
             modelBuilder.Entity("Physio.Domain.Entities.ContactEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -641,6 +711,69 @@ namespace Physio.Infrasctructure.Migrations
                     b.ToTable("TB_PROFESSIONAL_PATIENT", (string)null);
                 });
 
+            modelBuilder.Entity("Physio.Domain.Entities.ProfessionalSchedulingEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ID");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_CREATED_BY");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DAT_CREATED_ON");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DAT_DATE");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("FLG_IS_DELETED");
+
+                    b.Property<Guid>("PatientId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_PATIENT");
+
+                    b.Property<Guid>("ProfessionalId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_PROFESSIONAL");
+
+                    b.Property<Guid>("SchedulingStatusId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_SCHEDULING_STATUS");
+
+                    b.Property<Guid>("SchedulingTypeId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_SCHEDULING_TYPE");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_UPDATED_BY");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DAT_UPDATED_ON");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("ProfessionalId");
+
+                    b.HasIndex("SchedulingStatusId");
+
+                    b.HasIndex("SchedulingTypeId");
+
+                    b.ToTable("TB_PROFESSIONAL_SCHEDULING", (string)null);
+                });
+
             modelBuilder.Entity("Physio.Domain.Entities.ProtocolEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -754,6 +887,42 @@ namespace Physio.Infrasctructure.Migrations
                     b.ToTable("TB_SCHEDULING", (string)null);
                 });
 
+            modelBuilder.Entity("Physio.Domain.Entities.SchedulingTypeEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ID");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_CREATED_BY");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DAT_CREATED_ON");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("FLG_IS_DELETED");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("TXT_DATE");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_UPDATED_BY");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DAT_UPDATED_ON");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TB_SCHEDULING_TYPE", (string)null);
+                });
+
             modelBuilder.Entity("Physio.Domain.Entities.StatusSchedulingEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -799,7 +968,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("016f13e5-e543-49f4-891d-ac2567ebf190"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 2, 29, 12, 34, 51, 259, DateTimeKind.Utc).AddTicks(3239),
+                            CreatedOn = new DateTime(2024, 2, 29, 19, 8, 50, 218, DateTimeKind.Utc).AddTicks(1108),
                             IsDeleted = false,
                             Name = "Cancelado",
                             Status = 1
@@ -808,7 +977,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("d3c26666-1e31-460e-ba5f-4310735358c9"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 2, 29, 12, 34, 51, 259, DateTimeKind.Utc).AddTicks(3243),
+                            CreatedOn = new DateTime(2024, 2, 29, 19, 8, 50, 218, DateTimeKind.Utc).AddTicks(1111),
                             IsDeleted = false,
                             Name = "Finalizado",
                             Status = 2
@@ -817,7 +986,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("267e1ac0-05db-4cd2-9cb3-a9f262aadde1"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 2, 29, 12, 34, 51, 259, DateTimeKind.Utc).AddTicks(3245),
+                            CreatedOn = new DateTime(2024, 2, 29, 19, 8, 50, 218, DateTimeKind.Utc).AddTicks(1113),
                             IsDeleted = false,
                             Name = "Remarcado",
                             Status = 3
@@ -826,7 +995,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("e0c50144-28e6-480a-b414-7ccb8c77aafe"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 2, 29, 12, 34, 51, 259, DateTimeKind.Utc).AddTicks(3247),
+                            CreatedOn = new DateTime(2024, 2, 29, 19, 8, 50, 218, DateTimeKind.Utc).AddTicks(1115),
                             IsDeleted = false,
                             Name = "Agendado",
                             Status = 4
@@ -1040,6 +1209,49 @@ namespace Physio.Infrasctructure.Migrations
                     b.Navigation("ProfessionalEntity");
                 });
 
+            modelBuilder.Entity("Physio.Domain.Entities.ClinicSchedulingEntity", b =>
+                {
+                    b.HasOne("Physio.Domain.Entities.ClinicEntity", "ClinicEntity")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Physio.Domain.Entities.PatientEntity", "PatientEntity")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Physio.Domain.Entities.ProfessionalEntity", "ProfessionalEntity")
+                        .WithMany()
+                        .HasForeignKey("ProfessionalId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Physio.Domain.Entities.StatusSchedulingEntity", "SchedulingStatusEntity")
+                        .WithMany()
+                        .HasForeignKey("SchedulingStatusId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Physio.Domain.Entities.SchedulingTypeEntity", "SchedulingTypeEntity")
+                        .WithMany()
+                        .HasForeignKey("SchedulingTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ClinicEntity");
+
+                    b.Navigation("PatientEntity");
+
+                    b.Navigation("ProfessionalEntity");
+
+                    b.Navigation("SchedulingStatusEntity");
+
+                    b.Navigation("SchedulingTypeEntity");
+                });
+
             modelBuilder.Entity("Physio.Domain.Entities.ContactEntity", b =>
                 {
                     b.HasOne("Physio.Domain.Entities.UserEntity", "UserEntity")
@@ -1088,6 +1300,41 @@ namespace Physio.Infrasctructure.Migrations
                     b.Navigation("PatientEntity");
 
                     b.Navigation("ProfessionalEntity");
+                });
+
+            modelBuilder.Entity("Physio.Domain.Entities.ProfessionalSchedulingEntity", b =>
+                {
+                    b.HasOne("Physio.Domain.Entities.PatientEntity", "PatientEntity")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Physio.Domain.Entities.ProfessionalEntity", "ProfessionalEntity")
+                        .WithMany()
+                        .HasForeignKey("ProfessionalId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Physio.Domain.Entities.StatusSchedulingEntity", "SchedulingStatusEntity")
+                        .WithMany()
+                        .HasForeignKey("SchedulingStatusId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Physio.Domain.Entities.SchedulingTypeEntity", "SchedulingTypeEntity")
+                        .WithMany()
+                        .HasForeignKey("SchedulingTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("PatientEntity");
+
+                    b.Navigation("ProfessionalEntity");
+
+                    b.Navigation("SchedulingStatusEntity");
+
+                    b.Navigation("SchedulingTypeEntity");
                 });
 
             modelBuilder.Entity("Physio.Domain.Entities.SchedulingEntity", b =>

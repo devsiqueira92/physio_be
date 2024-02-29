@@ -37,6 +37,23 @@ internal sealed class PatientRepository : IPatientRepository
         return await query.ToListAsync(cancellationToken);
     }
 
+    public async Task<IQueryable<PatientEntity>> GetPatientsByUserIdAsync(string userId)
+    {
+        var patientsQuery = _context.Patients.AsQueryable();
+
+        var professionalPatientsQuery = _context.ProfessionalPatients
+            .Where(pp => pp.ProfessionalEntity.UserId == userId)
+            .Select(pp => pp.PatientEntity);
+
+        var clinicPatientsQuery = _context.ClinicPatients
+            .Where(cp => cp.ClinicEntity.UserId == userId)
+            .Select(cp => cp.PatientEntity);
+
+        var patientsByUserIdQuery = professionalPatientsQuery.Union(clinicPatientsQuery);
+
+        return patientsQuery.Intersect(patientsByUserIdQuery);
+    }
+
 
 
     public async Task<PatientEntity> GetAsync(Guid id, CancellationToken cancellationToken = default)

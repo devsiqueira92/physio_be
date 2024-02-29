@@ -91,10 +91,10 @@ internal sealed class SchedulingRepository : ISchedulingRepository
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<List<SchedulingEntity>> GetByMonthYearAsync(short month, short year, CancellationToken cancellationToken = default)
+    public async Task<List<SchedulingEntity>> GetByMonthYearAsync(short month, short year, string id, CancellationToken cancellationToken = default)
     {
         var query = _context.Schedulings
-                    .Where(sc => sc.Date.Month == month && sc.Date.Year == year)
+                    .Where(sc => (sc.Date.Month == month && sc.Date.Year == year) && (sc.ClinicEntity.UserId == id || sc.ProfessionalEntity.UserId == id))
                     .Select(d => new SchedulingEntity
                     {
                         Date = d.Date,
@@ -106,14 +106,15 @@ internal sealed class SchedulingRepository : ISchedulingRepository
         return await query.ToListAsync(cancellationToken);
     }
 
-    public async Task<List<SchedulingWithDetailsEntity>> GetByDateAsync(DateOnly date, CancellationToken cancellationToken = default)
+    public async Task<List<SchedulingWithDetailsEntity>> GetByDateAsync(DateOnly date, string id, CancellationToken cancellationToken = default)
     {
         var query = await _context.Schedulings
         .AsNoTracking()
-        .Where(sc => DateOnly.FromDateTime(sc.Date) == date &&
+        .Where(sc => (DateOnly.FromDateTime(sc.Date) == date &&
             !sc.PatientEntity.IsDeleted &&
             !sc.ProfessionalEntity.IsDeleted &&
-            !sc.SchedulingStatusEntity.IsDeleted
+            !sc.SchedulingStatusEntity.IsDeleted) &&
+            (sc.ClinicEntity.UserId == id || sc.ProfessionalEntity.UserId == id)
         )
         .GroupBy(group => group.Date)
         .Select(x => new SchedulingWithDetailsEntity

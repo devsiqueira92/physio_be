@@ -59,6 +59,17 @@ public static class DomainErrors
             "Patient not found.");
     }
 
+    public static class ProfessionalPatient
+    {
+        public static readonly Error PatientAlreadyRegistred = new(
+            "ClinicPatient.PatientAlreadyRegistred",
+            "Patient already registred to your clinic.");
+
+        public static readonly Error PatientNotFound = new(
+            "PatientClinic.PatientNotFound",
+            "Patient not found.");
+    }
+
     public static class Clinic
     {
         public static readonly Error ClinicAlreadyRegistred = new(

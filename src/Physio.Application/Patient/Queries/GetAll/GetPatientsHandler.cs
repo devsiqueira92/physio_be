@@ -16,7 +16,7 @@ internal sealed class GetPatientsHandler : IRequestHandler<GetPatientsQuery, Res
 
     public async Task<Result<List<PatientResponse>>> Handle(GetPatientsQuery request, CancellationToken cancellationToken)
     {
-            var patients = await _patientRepository.GetAllAsync(request.page, request.pageSize, cancellationToken);
+            var patients = await _patientRepository.GetPatientsByUserIdAsync(request.userId);
 
             if (!patients.Any())
                 return Result.Failure<List<PatientResponse>>(null);

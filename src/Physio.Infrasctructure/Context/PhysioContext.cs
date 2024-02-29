@@ -15,10 +15,15 @@ internal class PhysioContext : IdentityDbContext<UserEntity>
     public DbSet<SchedulingEntity> Schedulings { get; set; }
     public DbSet<MedicalAppointmentEntity> MedicalAppointments { get; set; }
     public DbSet<StatusSchedulingEntity> SchedulingStatuses { get; set; }
+    public DbSet<SchedulingTypeEntity> SchedulingTypes { get; set; }
     public DbSet<UserEntity> Users { get; set; }
+
     public DbSet<ClinicProfessionalEntity> ProfessionalClinics { get; set; }
     public DbSet<ClinicPatientEntity> ClinicPatients { get; set; }
+    public DbSet<ClinicSchedulingEntity> ClinicSchedulings { get; set; }
     public DbSet<ProfessionalPatientEntity> ProfessionalPatients { get; set; }
+    public DbSet<ProfessionalSchedulingEntity> ProfessionalSchedulings { get; set; }
+
     public DbSet<ClinicEntity> Clinics { get; set; }
     public DbSet<AddressEntity> Addresses { get; set; }
     public DbSet<ContactEntity> Contacts { get; set; }
@@ -44,7 +49,11 @@ internal class PhysioContext : IdentityDbContext<UserEntity>
         new ProfessionalEntityTypeConfiguration().Configure(modelBuilder.Entity<ProfessionalEntity>());
         
         new SchedulingEntityTypeConfiguration().Configure(modelBuilder.Entity<SchedulingEntity>());
+
+        new ClinicSchedulingEntityTypeConfiguration().Configure(modelBuilder.Entity<ClinicSchedulingEntity>());
+        new ProfessionalSchedulingEntityTypeConfiguration().Configure(modelBuilder.Entity<ProfessionalSchedulingEntity>());
         new StatusSchedulingEntityTypeConfiguration().Configure(modelBuilder.Entity<StatusSchedulingEntity>());
+        new SchedulingTypeEntityTypeConfiguration().Configure(modelBuilder.Entity<SchedulingTypeEntity>());
 
 
         var clinicRole = new RoleEntity { Id= "ca29a123-1a4b-4d75-84eb-6f39dd886f70", Name = "Clinic", NormalizedName = "CLINIC" };

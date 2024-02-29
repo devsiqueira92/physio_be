@@ -60,15 +60,18 @@ public class SchedulingEndpoint : IEndpointDefinition
         return result.IsSuccess ? TypedResults.Ok(result.Value) : TypedResults.NoContent();
     }
 
-    private async Task<IResult> GetByMonthYear(IMediator mediator, [AsParameters] SchedulingMonthYearRequest request)
+    private async Task<IResult> GetByMonthYear(IMediator mediator, [AsParameters] SchedulingMonthYearRequest request, HttpContext httpContext)
     {
-        var result = await mediator.Send(new GetByMonthYearQuery(request));
+        var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var result = await mediator.Send(new GetByMonthYearQuery(request, userId));
         return result.IsSuccess ? TypedResults.Ok(result.Value) : TypedResults.NoContent();
     }
 
-    private async Task<IResult> GetSchedulingGetByDate(IMediator mediator, DateOnly date)
+    private async Task<IResult> GetSchedulingGetByDate(IMediator mediator, DateOnly date, HttpContext httpContext)
     {
-        var result = await mediator.Send(new GetByDateQuery(date));
+        var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var result = await mediator.Send(new GetByDateQuery(date, userId));
 
         return result.IsSuccess ? TypedResults.Ok(result.Value) : TypedResults.BadRequest(result.Error);
     }

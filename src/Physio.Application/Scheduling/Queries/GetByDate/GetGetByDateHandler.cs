@@ -17,7 +17,7 @@ internal sealed class GetByDateHandler : IRequestHandler<GetByDateQuery, Result<
 
     public async Task<Result<List<SchedulingWithDetailListResponse>>> Handle(GetByDateQuery request, CancellationToken cancellationToken)
     {
-        var schedulings = await _schedulingRepository.GetByDateAsync(request.date, cancellationToken);
+        var schedulings = await _schedulingRepository.GetByDateAsync(request.date,request.userId, cancellationToken);
 
         if (schedulings is null)
             return Result.Failure<List<SchedulingWithDetailListResponse>>(DomainErrors.Generic.NotFound);

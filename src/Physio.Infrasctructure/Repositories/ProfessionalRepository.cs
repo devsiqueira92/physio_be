@@ -89,13 +89,13 @@ internal sealed class ProfessionalRepository : IProfessionalRepository
     public async Task<ProfessionalEntity> GetUserIdAsync(string userId, CancellationToken cancellationToken = default)
     {
         var query = _context.Professionals
-                    .Select(d => new ProfessionalEntity
-                    {
-                        UserId = d.UserId,
-                        IsDeleted = d.IsDeleted,
-                    })
+                    //.Select(d => new ProfessionalEntity
+                    //{
+                    //    UserId = d.UserId,
+                    //    IsDeleted = d.IsDeleted,
+                    //})
                    .Where(cls => !cls.IsDeleted && cls.UserId == userId);
 
-        return await query.SingleOrDefaultAsync(cancellationToken);
+        return await query.SingleAsync(cancellationToken);
     }
 }

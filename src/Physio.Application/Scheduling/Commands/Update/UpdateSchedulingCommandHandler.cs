@@ -35,7 +35,7 @@ internal sealed class UpdateSchedulingCommandHandler : IRequestHandler<UpdateSch
         {
 
             var schedulingStatus = await _statusSchedulingRepository.GetByEnumAsync(StatusSchedulingEnum.Agendado);
-            var result = scheduling.Update(request.scheduling.date, request.scheduling.patientId, request.scheduling.professionalId, schedulingStatus.Id, request.scheduling.clinicId,request.scheduling.schedulingType, request.userId);
+            var result = scheduling.Update(request.scheduling.date, request.scheduling.patientId, request.scheduling.professionalId, schedulingStatus.Id, request.scheduling.clinicId, request.scheduling.schedulingType.ToString(), request.userId);
 
             if (result.IsSuccess)
             {

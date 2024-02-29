@@ -11,4 +11,5 @@ public interface IPatientRepository
     Task<PatientEntity> GetAsync(Guid id, CancellationToken cancellationToken = default);
     Task<bool> FindByDocumentNumberAsync(string documentNumber, CancellationToken cancellationToken = default);
     Task<PatientEntity> GetByIdentificationNumberAsync(string identificationNumber, CancellationToken cancellationToken = default);
+    Task<IQueryable<PatientEntity>> GetPatientsByUserIdAsync(string userId);
 }

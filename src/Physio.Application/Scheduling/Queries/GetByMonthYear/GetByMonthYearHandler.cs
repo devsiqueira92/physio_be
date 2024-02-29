@@ -16,7 +16,8 @@ internal sealed class GetByMonthYearHandler : IRequestHandler<GetByMonthYearQuer
 
     public async Task<Result<List<SchedulingResponse>>> Handle(GetByMonthYearQuery request, CancellationToken cancellationToken)
     {
-        var schedulings = await _schedulingRepository.GetByMonthYearAsync(request.by.month, request.by.year);
+
+        var schedulings = await _schedulingRepository.GetByMonthYearAsync(request.by.month, request.by.year, request.userId);
 
         var list = schedulings.Select(scheduling => new SchedulingResponse(scheduling.Id, scheduling.Date, scheduling.PatientId, scheduling.ProfessionalId, scheduling.SchedulingStatusId)).ToList();
 

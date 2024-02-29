@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Physio.Application.Address.Queries.GetProfessionalAddresses;
 using Physio.Domain;
 using Physio.Domain.Entities;
 using Physio.Domain.Errors;
@@ -12,14 +13,20 @@ internal sealed class CreateSchedulingCommandHandler : IRequestHandler<CreateSch
 {
     private readonly ISchedulingRepository _schedulingRepository;
     private readonly IStatusSchedulingRepository _statusSchedulingRepository;
+
+
+    private readonly IClinicRepository _clinicRepository;
+    private readonly IProfessionalRepository _professionalRepository;
     private readonly IUnitOfWork _unitOfWork;
 
 
 
-    public CreateSchedulingCommandHandler(ISchedulingRepository schedulingRepository, IStatusSchedulingRepository statusSchedulingRepository, IUnitOfWork unitOfWork)
+    public CreateSchedulingCommandHandler(ISchedulingRepository schedulingRepository, IStatusSchedulingRepository statusSchedulingRepository, IClinicRepository clinicRepository, IProfessionalRepository professionalRepository, IUnitOfWork unitOfWork)
     {
         _schedulingRepository = schedulingRepository;
         _statusSchedulingRepository = statusSchedulingRepository;
+        _clinicRepository = clinicRepository;
+        _professionalRepository = professionalRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -35,11 +42,15 @@ internal sealed class CreateSchedulingCommandHandler : IRequestHandler<CreateSch
 
         var schedulingStatus = await _statusSchedulingRepository.GetByEnumAsync(StatusSchedulingEnum.Agendado);
 
-        var newScheduling = SchedulingEntity.Create(request.scheduling.date, 
-                request.scheduling.patientId, 
-                request.scheduling.professionalId, 
+        var clinic = await _clinicRepository.GetUserIdAsync(request.userId.ToString());
+
+        var professionalId = await GetProfessionalId(request, clinic?.Id);
+
+        var newScheduling = SchedulingEntity.Create(request.scheduling.date,
+                request.scheduling.patientId,
+                professionalId,
                 schedulingStatus.Id,
-                request.scheduling.clinicId,
+                clinic?.Id,
                 request.scheduling.schedulingType,
                 request.userId
         );
@@ -56,4 +67,15 @@ internal sealed class CreateSchedulingCommandHandler : IRequestHandler<CreateSch
         return Result.Failure<SchedulingResponse>(newScheduling.Error);
 
     }
+
+    private async Task<Guid> GetProfessionalId(CreateSchedulingCommand request, Guid? clinicId)
+    {
+        if(clinicId is not null)
+            return request.scheduling.professionalId;
+        
+        var professional = await _professionalRepository.GetByUserIdAsync(request.userId.ToString());
+        return professional.Id;
+    }
+
+
 }

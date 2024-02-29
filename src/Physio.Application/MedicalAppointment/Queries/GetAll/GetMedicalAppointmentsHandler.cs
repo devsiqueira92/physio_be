@@ -16,7 +16,7 @@ internal sealed class GetMedicalAppointmentsHandler : IRequestHandler<GetMedical
 
     public async Task<Result<List<MedicalAppointmentResponse>>> Handle(GetMedicalAppointmentsQuery request, CancellationToken cancellationToken)
     {
-            var medicalAppointments = await _medicalAppointmentRepository.GetAllAsync(request.page, request.pageSize, cancellationToken);
+            var medicalAppointments = await _medicalAppointmentRepository.GetAllAsync(request.page, request.pageSize, request.userId, cancellationToken);
 
             if (!medicalAppointments.Any())
                 return Result.Failure<List<MedicalAppointmentResponse>>(null);

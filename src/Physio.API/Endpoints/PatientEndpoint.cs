@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Physio.API.Configurations;
 using Physio.API.Filters;
 using Physio.Application.Patient.Commands.Create;
@@ -21,6 +22,7 @@ public class PatientEndpoint : IEndpointDefinition
 
         routes.MapGet("/", Get)
         .Produces(404)
+        .AllowAnonymous()
         .Produces<List<PatientResponse>>(200);
 
         routes.MapGet("/{id}", GetPatientById)
@@ -42,9 +44,10 @@ public class PatientEndpoint : IEndpointDefinition
         .Produces(204);
     }
 
-    private async Task<IResult> Get(IMediator mediator, [AsParameters] PaginatedRequest request)
+    private async Task<IResult> Get(IMediator mediator, [AsParameters] PaginatedRequest request, HttpContext httpContext)
     {
-        var result = await mediator.Send(new GetPatientsQuery(request.pageSize, request.pageNumber));
+        var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var result = await mediator.Send(new GetPatientsQuery(userId));
         return result.IsSuccess ? TypedResults.Ok(result.Value) : TypedResults.NoContent();
     }
 

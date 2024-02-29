@@ -38,9 +38,11 @@ public class MedicalAppointmentEndpoint : IEndpointDefinition
         .Produces(204);
     }
 
-    private async Task<IResult> Get(IMediator mediator, [AsParameters] PaginatedRequest request)
+    private async Task<IResult> Get(IMediator mediator, [AsParameters] PaginatedRequest request, HttpContext httpContext)
     {
-        var result = await mediator.Send(new GetMedicalAppointmentsQuery(request.pageSize, request.pageNumber));
+        var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var result = await mediator.Send(new GetMedicalAppointmentsQuery(userId, request.pageSize, request.pageNumber));
         return result.IsSuccess ? TypedResults.Ok(result.Value) : TypedResults.NoContent();
     }
 
