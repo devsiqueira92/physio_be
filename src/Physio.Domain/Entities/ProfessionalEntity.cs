@@ -13,6 +13,7 @@ public sealed class ProfessionalEntity : PersonEntity
     public UserEntity UserEntity { get; set; }
 
     public ICollection<ClinicProfessionalEntity> Clinics { get; set; }
+    public ICollection<ProfessionalPatientEntity> Patients { get; set; }
 
     public static Result<ProfessionalEntity> Create(string name, DateOnly birthDate, string registerNumber, decimal appointmentValue, Guid userId) =>
         new ProfessionalEntity

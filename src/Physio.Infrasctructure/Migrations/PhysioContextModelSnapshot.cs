@@ -598,6 +598,49 @@ namespace Physio.Infrasctructure.Migrations
                     b.ToTable("TB_PROFESSIONAL", (string)null);
                 });
 
+            modelBuilder.Entity("Physio.Domain.Entities.ProfessionalPatientEntity", b =>
+                {
+                    b.Property<Guid>("PatientId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_PATIENT");
+
+                    b.Property<Guid>("ProfessionalId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_PROFESSIONAL");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_CREATED_BY");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DAT_CREATED_ON");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ID");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("FLG_IS_DELETED");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("COD_UPDATED_BY");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DAT_UPDATED_ON");
+
+                    b.HasKey("PatientId", "ProfessionalId");
+
+                    b.HasIndex("ProfessionalId");
+
+                    b.ToTable("TB_PROFESSIONAL_PATIENT", (string)null);
+                });
+
             modelBuilder.Entity("Physio.Domain.Entities.ProtocolEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -756,7 +799,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("016f13e5-e543-49f4-891d-ac2567ebf190"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 2, 26, 21, 33, 26, 560, DateTimeKind.Utc).AddTicks(3211),
+                            CreatedOn = new DateTime(2024, 2, 29, 12, 34, 51, 259, DateTimeKind.Utc).AddTicks(3239),
                             IsDeleted = false,
                             Name = "Cancelado",
                             Status = 1
@@ -765,7 +808,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("d3c26666-1e31-460e-ba5f-4310735358c9"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 2, 26, 21, 33, 26, 560, DateTimeKind.Utc).AddTicks(3215),
+                            CreatedOn = new DateTime(2024, 2, 29, 12, 34, 51, 259, DateTimeKind.Utc).AddTicks(3243),
                             IsDeleted = false,
                             Name = "Finalizado",
                             Status = 2
@@ -774,7 +817,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("267e1ac0-05db-4cd2-9cb3-a9f262aadde1"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 2, 26, 21, 33, 26, 560, DateTimeKind.Utc).AddTicks(3217),
+                            CreatedOn = new DateTime(2024, 2, 29, 12, 34, 51, 259, DateTimeKind.Utc).AddTicks(3245),
                             IsDeleted = false,
                             Name = "Remarcado",
                             Status = 3
@@ -783,7 +826,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("e0c50144-28e6-480a-b414-7ccb8c77aafe"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 2, 26, 21, 33, 26, 560, DateTimeKind.Utc).AddTicks(3219),
+                            CreatedOn = new DateTime(2024, 2, 29, 12, 34, 51, 259, DateTimeKind.Utc).AddTicks(3247),
                             IsDeleted = false,
                             Name = "Agendado",
                             Status = 4
@@ -1028,6 +1071,25 @@ namespace Physio.Infrasctructure.Migrations
                     b.Navigation("UserEntity");
                 });
 
+            modelBuilder.Entity("Physio.Domain.Entities.ProfessionalPatientEntity", b =>
+                {
+                    b.HasOne("Physio.Domain.Entities.PatientEntity", "PatientEntity")
+                        .WithMany("Professionals")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Physio.Domain.Entities.ProfessionalEntity", "ProfessionalEntity")
+                        .WithMany("Patients")
+                        .HasForeignKey("ProfessionalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PatientEntity");
+
+                    b.Navigation("ProfessionalEntity");
+                });
+
             modelBuilder.Entity("Physio.Domain.Entities.SchedulingEntity", b =>
                 {
                     b.HasOne("Physio.Domain.Entities.ClinicEntity", "ClinicEntity")
@@ -1072,11 +1134,15 @@ namespace Physio.Infrasctructure.Migrations
             modelBuilder.Entity("Physio.Domain.Entities.PatientEntity", b =>
                 {
                     b.Navigation("Clinics");
+
+                    b.Navigation("Professionals");
                 });
 
             modelBuilder.Entity("Physio.Domain.Entities.ProfessionalEntity", b =>
                 {
                     b.Navigation("Clinics");
+
+                    b.Navigation("Patients");
                 });
 #pragma warning restore 612, 618
         }

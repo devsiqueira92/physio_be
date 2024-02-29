@@ -18,6 +18,7 @@ internal class PhysioContext : IdentityDbContext<UserEntity>
     public DbSet<UserEntity> Users { get; set; }
     public DbSet<ClinicProfessionalEntity> ProfessionalClinics { get; set; }
     public DbSet<ClinicPatientEntity> ClinicPatients { get; set; }
+    public DbSet<ProfessionalPatientEntity> ProfessionalPatients { get; set; }
     public DbSet<ClinicEntity> Clinics { get; set; }
     public DbSet<AddressEntity> Addresses { get; set; }
     public DbSet<ContactEntity> Contacts { get; set; }
@@ -33,6 +34,7 @@ internal class PhysioContext : IdentityDbContext<UserEntity>
 
         new ClinicEntityTypeConfiguration().Configure(modelBuilder.Entity<ClinicEntity>());
         new ClinicPatientEntityTypeConfiguration().Configure(modelBuilder.Entity<ClinicPatientEntity>());
+        new ProfessionalPatientEntityTypeConfiguration().Configure(modelBuilder.Entity<ProfessionalPatientEntity>());
         new ClinicProfessionalEntityTypeConfiguration().Configure(modelBuilder.Entity<ClinicProfessionalEntity>());
 
         new MedicalAppointmentEntityTypeConfiguration().Configure(modelBuilder.Entity<MedicalAppointmentEntity>());
