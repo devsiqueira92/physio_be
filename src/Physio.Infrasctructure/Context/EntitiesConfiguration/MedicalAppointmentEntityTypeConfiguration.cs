@@ -36,26 +36,16 @@ public class MedicalAppointmentEntityTypeConfiguration : IEntityTypeConfiguratio
         .HasColumnType("decimal(6, 2)");
 
 
-        builder.Property(f => f.ClinicSchedulingId)
-        .HasColumnName("COD_CLINIC_SCHEDULING")
+        builder.Property(f => f.SchedulingId)
+        .HasColumnName("COD_SCHEDULING")
         .HasMaxLength(36)
         .IsRequired();
 
-        builder.HasOne(p => p.ClinicSchedulingEntity)
+        builder.HasOne(p => p.SchedulingEntity)
         .WithMany()
-        .HasForeignKey(p => p.ClinicSchedulingId)
+        .HasForeignKey(p => p.SchedulingId)
         .OnDelete(DeleteBehavior.NoAction);
 
-
-        builder.Property(f => f.ProfessionalSchedulingId)
-        .HasColumnName("COD_PROFESSIONAL_SCHEDULING")
-        .HasMaxLength(36)
-        .IsRequired();
-
-        builder.HasOne(p => p.ProfessionalSchedulingEntity)
-        .WithMany()
-        .HasForeignKey(p => p.ProfessionalSchedulingId)
-        .OnDelete(DeleteBehavior.NoAction);
 
 
         builder.HasQueryFilter(x => !x.IsDeleted);

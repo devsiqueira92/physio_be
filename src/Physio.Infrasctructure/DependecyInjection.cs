@@ -8,6 +8,7 @@ using Physio.Domain.Entities;
 using Physio.Domain.RepositoryInterfaces;
 using Physio.Infrasctructure.Authentication;
 using Physio.Infrasctructure.Context;
+using Physio.Infrasctructure.Repositories;
 using Physio.Infrastructure.Repositories;
 
 namespace Physio.Infrastructure;
@@ -52,6 +53,7 @@ public static class DependencyInjection
                 .AddScoped<IContactRepository, ContactRepository>()
                 .AddScoped<IClinicRepository, ClinicRepository>()
                 .AddScoped<IClinicPatientRepository, ClinicPatientRepository>()
+                .AddScoped<IClinicSchedulingRepository, ClinicSchedulingRepository>()
                 
                 .AddScoped<IPatientRepository, PatientRepository>()
                 .AddScoped<IClinicProfessionalRepository, ClinicProfessionalRepository>()

@@ -17,7 +17,7 @@ public sealed class SchedulingEntity : BaseEntity
     public Guid SchedulingStatusId { get; set; }
     public StatusSchedulingEntity SchedulingStatusEntity { get; set; }
 
-    public static Result<SchedulingEntity> Create(DateTime date, Guid patientId, Guid professionalId, Guid schedulinglId, Guid schedulingTypeId, Guid userId)
+    public static Result<SchedulingEntity> Create(DateTime date, Guid patientId, Guid professionalId, Guid schedulingStatuslId, Guid schedulingTypeId, Guid userId)
     {
         bool isInvalidDate = DateTime.UtcNow.CompareTo(date) > 0;
 
@@ -29,7 +29,7 @@ public sealed class SchedulingEntity : BaseEntity
             Date = date,
             PatientId = patientId,
             ProfessionalId = professionalId,
-            SchedulingStatusId = schedulinglId,
+            SchedulingStatusId = schedulingStatuslId,
             SchedulingTypeId = schedulingTypeId,
             CreatedBy = userId
         };
@@ -61,7 +61,6 @@ public sealed class SchedulingEntity : BaseEntity
         SchedulingStatusId = schedulinglId;
         UpdatedBy = userId;
         UpdatedOn = DateTime.UtcNow;
-
         return Result.Success();
     }
 }

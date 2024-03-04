@@ -22,7 +22,6 @@ internal class PhysioContext : IdentityDbContext<UserEntity>
     public DbSet<ClinicPatientEntity> ClinicPatients { get; set; }
     public DbSet<ClinicSchedulingEntity> ClinicSchedulings { get; set; }
     public DbSet<ProfessionalPatientEntity> ProfessionalPatients { get; set; }
-    public DbSet<ProfessionalSchedulingEntity> ProfessionalSchedulings { get; set; }
 
     public DbSet<ClinicEntity> Clinics { get; set; }
     public DbSet<AddressEntity> Addresses { get; set; }
@@ -49,12 +48,13 @@ internal class PhysioContext : IdentityDbContext<UserEntity>
         new ProfessionalEntityTypeConfiguration().Configure(modelBuilder.Entity<ProfessionalEntity>());
         
         new SchedulingEntityTypeConfiguration().Configure(modelBuilder.Entity<SchedulingEntity>());
+        new ClinicSchedulingEntityTypeConfiguration().Configure(modelBuilder.Entity<ClinicSchedulingEntity>());
 
         new StatusSchedulingEntityTypeConfiguration().Configure(modelBuilder.Entity<StatusSchedulingEntity>());
         new SchedulingTypeEntityTypeConfiguration().Configure(modelBuilder.Entity<SchedulingTypeEntity>());
 
 
-        var clinicRole = new RoleEntity { Id= "ca29a123-1a4b-4d75-84eb-6f39dd886f70", Name = "Clinic", NormalizedName = "CLINIC" };
+        var clinicRole = new RoleEntity { Id = "ca29a123-1a4b-4d75-84eb-6f39dd886f70", Name = "Clinic", NormalizedName = "CLINIC" };
         var patientRole = new RoleEntity { Id = "5f75bc70-66e9-4360-a5f5-60cd4d60dbee", Name = "Patient", NormalizedName = "PATIENT" };
         var professionalRole = new RoleEntity { Id = "645eb3bb-ab2a-4542-a3e1-8bd8ef945bda", Name = "Professional", NormalizedName = "PROFESSIONAL" };
 

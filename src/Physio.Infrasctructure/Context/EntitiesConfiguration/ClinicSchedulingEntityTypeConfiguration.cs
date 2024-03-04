@@ -10,52 +10,15 @@ public class ClinicSchedulingEntityTypeConfiguration : IEntityTypeConfiguration<
     {
         builder.ToTable("TB_CLINIC_SCHEDULING");
 
-        builder.Property(f => f.Date)
-        .HasColumnName("DAT_DATE")
-        .IsRequired();
-
-        builder.Property(f => f.SchedulingTypeId)
+        builder.Property(f => f.SchedulingId)
         .HasMaxLength(36)
-        .HasColumnName("COD_SCHEDULING_TYPE")
+        .HasColumnName("COD_SCHEDULING")
         .IsRequired();
 
-        builder.HasOne(p => p.SchedulingTypeEntity)
+        builder.HasOne(p => p.SchedulingEntity)
        .WithMany()
-       .HasForeignKey(p => p.SchedulingTypeId)
+       .HasForeignKey(p => p.SchedulingId)
        .OnDelete(DeleteBehavior.NoAction);
-
-
-        builder.Property(f => f.PatientId)
-        .HasColumnName("COD_PATIENT")
-        .HasMaxLength(36)
-        .IsRequired();
-
-        builder.HasOne(p => p.PatientEntity)
-        .WithMany()
-        .HasForeignKey(p => p.PatientId)
-        .OnDelete(DeleteBehavior.NoAction);
-
-
-        builder.Property(f => f.ProfessionalId)
-        .HasColumnName("COD_PROFESSIONAL")
-        .HasMaxLength(36)
-        .IsRequired();
-
-        builder.HasOne(p => p.ProfessionalEntity)
-        .WithMany()
-        .HasForeignKey(p => p.ProfessionalId)
-        .OnDelete(DeleteBehavior.NoAction);
-
-
-        builder.Property(f => f.SchedulingStatusId)
-        .HasColumnName("COD_SCHEDULING_STATUS")
-        .HasMaxLength(36)
-        .IsRequired();
-
-        builder.HasOne(p => p.SchedulingStatusEntity)
-        .WithMany()
-        .HasForeignKey(p => p.SchedulingStatusId)
-        .OnDelete(DeleteBehavior.NoAction);
 
         builder.Property(f => f.ClinicId)
         .HasColumnName("COD_CLINIC")
@@ -67,6 +30,5 @@ public class ClinicSchedulingEntityTypeConfiguration : IEntityTypeConfiguration<
         .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasQueryFilter(x => !x.IsDeleted);
-        //builder.HasIndex(f => f.RegisterNumber).IsUnique();
     }
 }

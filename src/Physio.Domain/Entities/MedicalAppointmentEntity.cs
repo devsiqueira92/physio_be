@@ -1,5 +1,4 @@
-﻿
-using Physio.Domain.Shared;
+﻿using Physio.Domain.Shared;
 
 namespace Physio.Domain.Entities;
 
@@ -12,11 +11,8 @@ public sealed class MedicalAppointmentEntity : BaseEntity
     public string Notes { get; set; }
     public decimal? Weight { get; set; }
 
-    public Guid? ProfessionalSchedulingId { get; set; }
-    public ProfessionalSchedulingEntity ProfessionalSchedulingEntity { get; set; }
-
-    public Guid? ClinicSchedulingId { get; set; }
-    public ClinicSchedulingEntity ClinicSchedulingEntity { get; set; }
+    public Guid? SchedulingId { get; set; }
+    public SchedulingEntity SchedulingEntity { get; set; }
 
     public static Result<MedicalAppointmentEntity> Create(string beatsPerMinute, string bloodPressure, string bloodOxygenation, string evolution, string notes, decimal? weight, Guid schedulingId, Guid userId) =>
         new MedicalAppointmentEntity {
@@ -26,37 +22,11 @@ public sealed class MedicalAppointmentEntity : BaseEntity
             Evolution = evolution,
             Notes = notes,
             Weight = weight,
-            //SchedulingId = schedulingId,
+            SchedulingId = schedulingId,
             CreatedBy = userId,
         };
-
-    public static Result<MedicalAppointmentEntity> CreateAsProfessional(string beatsPerMinute, string bloodPressure, string bloodOxygenation, string evolution, string notes, decimal? weight, Guid schedulingId, Guid userId) =>
-       new MedicalAppointmentEntity
-       {
-           BeatsPerMinute = beatsPerMinute,
-           BloodPressure = bloodPressure,
-           BloodOxygenation = bloodOxygenation,
-           Evolution = evolution,
-           Notes = notes,
-           Weight = weight,
-           ProfessionalSchedulingId = schedulingId,
-           CreatedBy = userId,
-       };
-
-    public static Result<MedicalAppointmentEntity> CreateAsClinic(string beatsPerMinute, string bloodPressure, string bloodOxygenation, string evolution, string notes, decimal? weight, Guid schedulingId, Guid userId) =>
-       new MedicalAppointmentEntity
-       {
-           BeatsPerMinute = beatsPerMinute,
-           BloodPressure = bloodPressure,
-           BloodOxygenation = bloodOxygenation,
-           Evolution = evolution,
-           Notes = notes,
-           Weight = weight,
-           ClinicSchedulingId = schedulingId,
-           CreatedBy = userId,
-       };
-
-    public Result Update(string beatsPerMinute, string bloodPressure, string bloodOxygenation, string evolution, string notes, decimal weight, Guid schedulingId, Guid userId)
+   
+    public Result Update(string beatsPerMinute, string bloodPressure, string bloodOxygenation, string evolution, string notes, decimal weight, Guid userId)
     {
         BeatsPerMinute = beatsPerMinute;
         BloodPressure = bloodPressure;
@@ -64,7 +34,6 @@ public sealed class MedicalAppointmentEntity : BaseEntity
         Evolution = evolution;
         Notes = notes;
         Weight = weight;
-        //SchedulingId = schedulingId;
         UpdatedBy = userId;
         UpdatedOn = DateTime.UtcNow;
 

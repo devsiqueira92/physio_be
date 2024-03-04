@@ -91,10 +91,10 @@ internal sealed class SchedulingRepository : ISchedulingRepository
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<List<SchedulingEntity>> GetByMonthYearAsync(short month, short year, string id, CancellationToken cancellationToken = default)
+    public async Task<List<SchedulingEntity>> GetProfessionalAgendaByMonthYearAsync(short month, short year, string id, CancellationToken cancellationToken = default)
     {
         var query = _context.Schedulings
-                    //.Where(sc => (sc.Date.Month == month && sc.Date.Year == year) && (sc.ClinicEntity.UserId == id || sc.ProfessionalEntity.UserId == id))
+                    .Where(sc => (sc.Date.Month == month && sc.Date.Year == year) && (sc.ProfessionalEntity.UserId == id))
                     .Select(d => new SchedulingEntity
                     {
                         Date = d.Date,
@@ -132,18 +132,6 @@ internal sealed class SchedulingRepository : ISchedulingRepository
         .ToListAsync(cancellationToken);
 
         return query;
-    }
-
-    public async Task<bool> CheckIfProfessionalIsAvailableAsync(DateTime date, Guid professionalId, CancellationToken cancellationToken = default)
-    {
-        return await _context.Schedulings
-            .AsNoTracking()
-            .AnyAsync(sc => !sc.IsDeleted && 
-                sc.Date == date && 
-                sc.ProfessionalId == professionalId &&
-                sc.SchedulingStatusEntity.Status != StatusSchedulingEnum.Cancelado, 
-                cancellationToken
-            );
     }
 
     public async Task<bool> CheckIfPatientIsAvailableAsync(DateTime date, Guid patientId, Guid professionaiId, CancellationToken cancellationToken = default)
