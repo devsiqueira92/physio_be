@@ -6,7 +6,8 @@ namespace Physio.Domain.Entities;
 public sealed class SchedulingEntity : BaseEntity
 {
     public DateTime Date { get; set; }
-    public string SchedulingType { get; set; }
+    public Guid SchedulingTypeId { get; set; }
+    public SchedulingTypeEntity SchedulingTypeEntity { get; set; }
     public Guid PatientId { get; set; }
     public PatientEntity PatientEntity { get; set; }
 
@@ -16,10 +17,7 @@ public sealed class SchedulingEntity : BaseEntity
     public Guid SchedulingStatusId { get; set; }
     public StatusSchedulingEntity SchedulingStatusEntity { get; set; }
 
-    public Guid? ClinicId { get; set; }
-    public ClinicEntity ClinicEntity { get; set; }
-
-    public static Result<SchedulingEntity> Create(DateTime date, Guid patientId, Guid professionalId, Guid schedulinglId, Guid? clinicId, string schedulingType, Guid userId)
+    public static Result<SchedulingEntity> Create(DateTime date, Guid patientId, Guid professionalId, Guid schedulinglId, Guid schedulingTypeId, Guid userId)
     {
         bool isInvalidDate = DateTime.UtcNow.CompareTo(date) > 0;
 
@@ -32,14 +30,13 @@ public sealed class SchedulingEntity : BaseEntity
             PatientId = patientId,
             ProfessionalId = professionalId,
             SchedulingStatusId = schedulinglId,
-            SchedulingType = schedulingType,
-            ClinicId = clinicId is not null ? clinicId : null,
+            SchedulingTypeId = schedulingTypeId,
             CreatedBy = userId
         };
     }
 
 
-    public Result Update(DateTime date, Guid patientId, Guid professionalId, Guid schedulinglId, Guid? clinicId, string schedulingType, Guid userId)
+    public Result Update(DateTime date, Guid patientId, Guid professionalId, Guid schedulinglId, Guid schedulingTypeId, Guid userId)
     {
         bool isInvalidDate = DateTime.UtcNow.CompareTo(date) < 0;
 
@@ -49,8 +46,7 @@ public sealed class SchedulingEntity : BaseEntity
             PatientId = patientId;
             ProfessionalId = professionalId;
             SchedulingStatusId = schedulinglId;
-            SchedulingType = schedulingType;
-            ClinicId = clinicId is not null ? clinicId : null;
+            SchedulingTypeId = schedulingTypeId;
             UpdatedBy = userId;
             UpdatedOn = DateTime.UtcNow;
 

@@ -14,9 +14,16 @@ public class SchedulingEntityTypeConfiguration : IEntityTypeConfiguration<Schedu
         .HasColumnName("DAT_DATE")
         .IsRequired();
 
-        builder.Property(f => f.SchedulingType)
+
+        builder.Property(f => f.SchedulingTypeId)
         .HasColumnName("COD_SCHEDULING_TYPE")
+        .HasMaxLength(36)
         .IsRequired();
+
+        builder.HasOne(p => p.SchedulingTypeEntity)
+        .WithMany()
+        .HasForeignKey(p => p.SchedulingTypeId)
+        .OnDelete(DeleteBehavior.NoAction);
 
         builder.Property(f => f.PatientId)
         .HasColumnName("COD_PATIENT")
@@ -50,14 +57,14 @@ public class SchedulingEntityTypeConfiguration : IEntityTypeConfiguration<Schedu
         .HasForeignKey(p => p.SchedulingStatusId)
         .OnDelete(DeleteBehavior.NoAction);
 
-        builder.Property(f => f.ClinicId)
-        .HasColumnName("COD_CLINIC")
-        .HasMaxLength(36);
+        //builder.Property(f => f.ClinicId)
+        //.HasColumnName("COD_CLINIC")
+        //.HasMaxLength(36);
 
-        builder.HasOne(p => p.ClinicEntity)
-        .WithMany()
-        .HasForeignKey(p => p.ClinicId)
-        .OnDelete(DeleteBehavior.NoAction);
+        //builder.HasOne(p => p.ClinicEntity)
+        //.WithMany()
+        //.HasForeignKey(p => p.ClinicId)
+        //.OnDelete(DeleteBehavior.NoAction);
 
         builder.HasQueryFilter(x => !x.IsDeleted);
         //builder.HasIndex(f => f.RegisterNumber).IsUnique();

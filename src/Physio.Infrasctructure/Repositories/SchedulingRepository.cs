@@ -47,7 +47,7 @@ internal sealed class SchedulingRepository : ISchedulingRepository
                         PatientId = d.PatientId,
                         ProfessionalId = d.ProfessionalId,
                         SchedulingStatusId = d.SchedulingStatusId,
-                        SchedulingType = d.SchedulingType,
+                        SchedulingTypeId = d.SchedulingTypeId,
                         Id = d.Id,
                         CreatedOn = d.CreatedOn,
                     });
@@ -65,7 +65,7 @@ internal sealed class SchedulingRepository : ISchedulingRepository
                         PatientId = d.PatientId,
                         ProfessionalId = d.ProfessionalId,
                         SchedulingStatusId = d.SchedulingStatusId,
-                        SchedulingType = d.SchedulingType,
+                        SchedulingTypeId = d.SchedulingTypeId,
                         SchedulingStatusEntity = new StatusSchedulingEntity
                         {
                             Name = d.SchedulingStatusEntity.Name,
@@ -94,7 +94,7 @@ internal sealed class SchedulingRepository : ISchedulingRepository
     public async Task<List<SchedulingEntity>> GetByMonthYearAsync(short month, short year, string id, CancellationToken cancellationToken = default)
     {
         var query = _context.Schedulings
-                    .Where(sc => (sc.Date.Month == month && sc.Date.Year == year) && (sc.ClinicEntity.UserId == id || sc.ProfessionalEntity.UserId == id))
+                    //.Where(sc => (sc.Date.Month == month && sc.Date.Year == year) && (sc.ClinicEntity.UserId == id || sc.ProfessionalEntity.UserId == id))
                     .Select(d => new SchedulingEntity
                     {
                         Date = d.Date,
@@ -114,7 +114,7 @@ internal sealed class SchedulingRepository : ISchedulingRepository
             !sc.PatientEntity.IsDeleted &&
             !sc.ProfessionalEntity.IsDeleted &&
             !sc.SchedulingStatusEntity.IsDeleted) &&
-            (sc.ClinicEntity.UserId == id || sc.ProfessionalEntity.UserId == id)
+            sc.ProfessionalEntity.UserId == id
         )
         .GroupBy(group => group.Date)
         .Select(x => new SchedulingWithDetailsEntity

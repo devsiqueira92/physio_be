@@ -841,11 +841,6 @@ namespace Physio.Infrasctructure.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("ID");
 
-                    b.Property<Guid?>("ClinicId")
-                        .HasMaxLength(36)
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("COD_CLINIC");
-
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("COD_CREATED_BY");
@@ -877,9 +872,9 @@ namespace Physio.Infrasctructure.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("COD_SCHEDULING_STATUS");
 
-                    b.Property<string>("SchedulingType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<Guid>("SchedulingTypeId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("COD_SCHEDULING_TYPE");
 
                     b.Property<Guid?>("UpdatedBy")
@@ -892,13 +887,13 @@ namespace Physio.Infrasctructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClinicId");
-
                     b.HasIndex("PatientId");
 
                     b.HasIndex("ProfessionalId");
 
                     b.HasIndex("SchedulingStatusId");
+
+                    b.HasIndex("SchedulingTypeId");
 
                     b.ToTable("TB_SCHEDULING", (string)null);
                 });
@@ -984,7 +979,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("016f13e5-e543-49f4-891d-ac2567ebf190"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 3, 4, 13, 48, 18, 109, DateTimeKind.Utc).AddTicks(7805),
+                            CreatedOn = new DateTime(2024, 3, 4, 13, 59, 18, 201, DateTimeKind.Utc).AddTicks(2196),
                             IsDeleted = false,
                             Name = "Cancelado",
                             Status = 1
@@ -993,7 +988,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("d3c26666-1e31-460e-ba5f-4310735358c9"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 3, 4, 13, 48, 18, 109, DateTimeKind.Utc).AddTicks(7808),
+                            CreatedOn = new DateTime(2024, 3, 4, 13, 59, 18, 201, DateTimeKind.Utc).AddTicks(2199),
                             IsDeleted = false,
                             Name = "Finalizado",
                             Status = 2
@@ -1002,7 +997,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("267e1ac0-05db-4cd2-9cb3-a9f262aadde1"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 3, 4, 13, 48, 18, 109, DateTimeKind.Utc).AddTicks(7810),
+                            CreatedOn = new DateTime(2024, 3, 4, 13, 59, 18, 201, DateTimeKind.Utc).AddTicks(2202),
                             IsDeleted = false,
                             Name = "Remarcado",
                             Status = 3
@@ -1011,7 +1006,7 @@ namespace Physio.Infrasctructure.Migrations
                         {
                             Id = new Guid("e0c50144-28e6-480a-b414-7ccb8c77aafe"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTime(2024, 3, 4, 13, 48, 18, 109, DateTimeKind.Utc).AddTicks(7812),
+                            CreatedOn = new DateTime(2024, 3, 4, 13, 59, 18, 201, DateTimeKind.Utc).AddTicks(2205),
                             IsDeleted = false,
                             Name = "Agendado",
                             Status = 4
@@ -1345,11 +1340,6 @@ namespace Physio.Infrasctructure.Migrations
 
             modelBuilder.Entity("Physio.Domain.Entities.SchedulingEntity", b =>
                 {
-                    b.HasOne("Physio.Domain.Entities.ClinicEntity", "ClinicEntity")
-                        .WithMany()
-                        .HasForeignKey("ClinicId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("Physio.Domain.Entities.PatientEntity", "PatientEntity")
                         .WithMany()
                         .HasForeignKey("PatientId")
@@ -1368,13 +1358,19 @@ namespace Physio.Infrasctructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("ClinicEntity");
+                    b.HasOne("Physio.Domain.Entities.SchedulingTypeEntity", "SchedulingTypeEntity")
+                        .WithMany()
+                        .HasForeignKey("SchedulingTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("PatientEntity");
 
                     b.Navigation("ProfessionalEntity");
 
                     b.Navigation("SchedulingStatusEntity");
+
+                    b.Navigation("SchedulingTypeEntity");
                 });
 
             modelBuilder.Entity("Physio.Domain.Entities.ClinicEntity", b =>
