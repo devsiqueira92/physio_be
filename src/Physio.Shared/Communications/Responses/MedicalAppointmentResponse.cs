@@ -8,7 +8,7 @@ public record MedicalAppointmentResponse(Guid id,
     string evolution, 
     string notes, 
     decimal? weight, 
-    Guid schedulingId, 
+    //Guid schedulingId, 
     string patientName = null, 
     string professionalName = null, 
     DateTime? date = null

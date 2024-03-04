@@ -50,8 +50,6 @@ internal class PhysioContext : IdentityDbContext<UserEntity>
         
         new SchedulingEntityTypeConfiguration().Configure(modelBuilder.Entity<SchedulingEntity>());
 
-        new ClinicSchedulingEntityTypeConfiguration().Configure(modelBuilder.Entity<ClinicSchedulingEntity>());
-        new ProfessionalSchedulingEntityTypeConfiguration().Configure(modelBuilder.Entity<ProfessionalSchedulingEntity>());
         new StatusSchedulingEntityTypeConfiguration().Configure(modelBuilder.Entity<StatusSchedulingEntity>());
         new SchedulingTypeEntityTypeConfiguration().Configure(modelBuilder.Entity<SchedulingTypeEntity>());
 

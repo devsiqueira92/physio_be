@@ -94,6 +94,10 @@ public static class DomainErrors
         public static readonly Error PastDate = new(
             "Scheduling.PastDate",
             "Scheduling date can't be on past");
+
+        public static readonly Error SchedulingNotFound = new(
+          "Scheduling.SchedulingNotFound",
+          "Scheduling not found.");
     }
 
     public static class Token
