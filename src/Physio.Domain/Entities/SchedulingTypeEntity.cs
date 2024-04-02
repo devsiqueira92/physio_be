@@ -7,9 +7,9 @@ public sealed class SchedulingTypeEntity : BaseEntity
 {
     public string Name { get; set; }
 
-    public static Result<StatusSchedulingEntity> Create(string name, Guid userId)
+    public static Result<SchedulingTypeEntity> Create(string name, Guid userId)
     {
-        return new StatusSchedulingEntity { Name = name, CreatedBy = userId };
+        return new SchedulingTypeEntity { Name = name, CreatedBy = userId };
     }
 
     public Result Update(string name, Guid userId)

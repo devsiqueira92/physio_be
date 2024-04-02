@@ -57,6 +57,7 @@ public static class DependencyInjection
                 
                 .AddScoped<IPatientRepository, PatientRepository>()
                 .AddScoped<IClinicProfessionalRepository, ClinicProfessionalRepository>()
+                .AddScoped<IMedicalAppointmentRepository, MedicalAppointmentRepository>()
                 .AddScoped<IProfessionalRepository, ProfessionalRepository>()
 
                 .AddScoped<IProfessionalPatientRepository, ProfessionalPatientRepository>()
@@ -64,6 +65,7 @@ public static class DependencyInjection
                 .AddScoped<IProtocolRepository, ProtocolRepository>()
                 .AddScoped<IStatusSchedulingRepository, StatusSchedulingRepository>()
                 .AddScoped<ISchedulingTypeRepository, SchedulingTypeRepository>()
+                .AddScoped<ISchedulingRepository, SchedulingRepository>()
                 .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IUnitOfWork, UnitOfWork>();
     }

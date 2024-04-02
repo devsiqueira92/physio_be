@@ -21,6 +21,6 @@ internal sealed class GetSchedulingHandler : IRequestHandler<GetSchedulingQuery,
         if (scheduling is null)
             return Result.Failure<SchedulingResponse>(DomainErrors.Generic.NotFound);
 
-        return new SchedulingResponse(scheduling.Id, scheduling.Date, scheduling.PatientId, scheduling.ProfessionalId, scheduling.SchedulingTypeId);
+        return new SchedulingResponse(scheduling.Id, scheduling.Date, scheduling.PatientId, scheduling.ProfessionalId, schedulingTypeId: scheduling.SchedulingTypeId, schedulingStatusId: scheduling.SchedulingStatusId);
     }
 }

@@ -4,6 +4,7 @@ using Physio.API.Filters;
 using Physio.Application.Scheduling.Commands.Create;
 using Physio.Application.Scheduling.Commands.Delete;
 using Physio.Application.Scheduling.Commands.Update;
+using Physio.Application.Scheduling.Queries.GetByDate;
 using Physio.Application.Scheduling.Queries.GetById;
 using Physio.Application.Scheduling.Queries.GetByMonthYear;
 using Physio.Shared.Communications.Requests;
@@ -23,6 +24,10 @@ public class SchedulingEndpoint : IEndpointDefinition
         .Produces<SchedulingResponse>(200);
 
         routes.MapGet("/agenda", GetProfessionalAgenda)
+        .Produces(404)
+        .Produces<SchedulingResponse>(200);
+
+        routes.MapGet("/by-date/{date}", GetByDate)
         .Produces(404)
         .Produces<SchedulingResponse>(200);
 
@@ -49,6 +54,14 @@ public class SchedulingEndpoint : IEndpointDefinition
     {
         var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var result = await mediator.Send(new GetByMonthYearQuery(request, userId));
+
+        return result.IsSuccess ? TypedResults.Ok(result.Value) : TypedResults.NoContent();
+    }
+
+    private async Task<IResult> GetByDate(IMediator mediator, string date, HttpContext httpContext)
+    {
+        var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var result = await mediator.Send(new GetByDateQuery(DateOnly.Parse(date), userId));
 
         return result.IsSuccess ? TypedResults.Ok(result.Value) : TypedResults.NoContent();
     }

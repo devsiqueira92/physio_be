@@ -25,8 +25,8 @@ internal sealed class GetByMonthYearHandler : IRequestHandler<GetByMonthYearQuer
                     scheduling.Id, 
                     scheduling.SchedulingEntity.Date, 
                     scheduling.SchedulingEntity.PatientId, 
-                    scheduling.SchedulingEntity.ProfessionalId, 
-                    scheduling.SchedulingEntity.SchedulingTypeId
+                    scheduling.SchedulingEntity.ProfessionalId,
+                    schedulingTypeId: scheduling.SchedulingEntity.SchedulingTypeId
                 )
             ).ToList();
 

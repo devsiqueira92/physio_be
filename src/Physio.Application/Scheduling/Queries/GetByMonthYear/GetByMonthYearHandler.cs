@@ -20,7 +20,7 @@ internal sealed class GetByMonthYearHandler : IRequestHandler<GetByMonthYearQuer
         if (!schedulings.Any())
             return Result.Failure<List<SchedulingResponse>>(null);
 
-        var list = schedulings.Select(scheduling => new SchedulingResponse(scheduling.Id, scheduling.Date, scheduling.PatientId, scheduling.ProfessionalId, scheduling.SchedulingTypeId)).ToList();
+        var list = schedulings.Select(scheduling => new SchedulingResponse(scheduling.Id, scheduling.Date, scheduling.PatientId, scheduling.ProfessionalId, schedulingTypeId: scheduling.SchedulingTypeId)).ToList();
 
         return new List<SchedulingResponse>(list);
     }

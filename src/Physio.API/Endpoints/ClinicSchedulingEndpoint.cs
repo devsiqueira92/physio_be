@@ -3,7 +3,6 @@ using Physio.API.Configurations;
 using Physio.API.Filters;
 using Physio.Application.ClinicScheduling.Commands.Create;
 using Physio.Application.ClinicScheduling.Queries.GetByMonthYear;
-using Physio.Application.Scheduling.Queries.GetById;
 using Physio.Shared.Communications.Requests;
 using Physio.Shared.Communications.Responses;
 using System.Security.Claims;

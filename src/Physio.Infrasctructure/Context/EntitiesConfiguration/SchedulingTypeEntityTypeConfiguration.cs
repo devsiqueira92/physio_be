@@ -11,7 +11,7 @@ public class SchedulingTypeEntityTypeConfiguration : IEntityTypeConfiguration<Sc
         builder.ToTable("TB_SCHEDULING_TYPE");
 
         builder.Property(f => f.Name)
-        .HasColumnName("TXT_DATE")
+        .HasColumnName("TXT_NAME")
         .IsRequired();
 
         builder.HasQueryFilter(x => !x.IsDeleted);

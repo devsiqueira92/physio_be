@@ -30,7 +30,7 @@ internal sealed class CreateClinicSchedulingCommandHandler : IRequestHandler<Cre
     public async Task<Result<SchedulingResponse>> Handle(CreateClinicSchedulingCommand request, CancellationToken cancellationToken)
     {
         //check if Patient, Professional and Date are available
-        var isUnavailable = await _schedulingRepository.CheckIfPatientIsAvailableAsync(request.scheduling.date, request.scheduling.patientId, request.scheduling.professionalId);
+        var isUnavailable = await _schedulingRepository.CheckIfPatientIsAvailableAsync(request.scheduling.date, request.scheduling.patientId , Guid.NewGuid() /* , request.scheduling.professionalId */ );
 
         if (isUnavailable) 
             return Result.Failure<SchedulingResponse>(DomainErrors.Scheduling.ProfessionalUnavailable);
@@ -48,7 +48,8 @@ internal sealed class CreateClinicSchedulingCommandHandler : IRequestHandler<Cre
         var scheduling = SchedulingEntity.Create(
             request.scheduling.date,
             request.scheduling.patientId,
-            request.scheduling.professionalId,
+            //request.scheduling.professionalId,
+            Guid.NewGuid(),
             statusAgendado.Id,
             request.scheduling.schedulingTypeId,
             userId
@@ -62,7 +63,7 @@ internal sealed class CreateClinicSchedulingCommandHandler : IRequestHandler<Cre
             await _clinicSchedulingRepository.CreateAsync(clinicScheduling.Value, cancellationToken);
             await _unitOfWork.SaveChangesAsync();
 
-            return new SchedulingResponse(scheduling.Value.Id, scheduling.Value.Date, scheduling.Value.PatientId, scheduling.Value.ProfessionalId, scheduling.Value.SchedulingStatusId);
+            return new SchedulingResponse(scheduling.Value.Id, scheduling.Value.Date, scheduling.Value.PatientId, scheduling.Value.ProfessionalId, schedulingTypeId: scheduling.Value.SchedulingTypeId);
         }
         return Result.Failure<SchedulingResponse>(DomainErrors.Generic.CreateError);
     }

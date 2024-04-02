@@ -5,11 +5,12 @@ public record SchedulingResponse(Guid id,
         DateTime date, 
         Guid patientId, 
         Guid professionalId, 
-        Guid schedulingId, 
         string patientName = null, 
         string patientContact = null, 
         DateOnly? patientBirthDate = null, 
         string schedulingType = null, 
         string professionalName = null, 
-        string schedulingStatus = null
+        string schedulingStatus = null,
+        Guid? schedulingStatusId = null,
+        Guid? schedulingTypeId = null
 );
