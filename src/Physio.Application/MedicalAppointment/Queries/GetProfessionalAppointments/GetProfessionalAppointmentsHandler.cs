@@ -22,9 +22,6 @@ internal sealed class GetProfessionalAppointmentsHandler : IRequestHandler<GetPr
             
         var medicalAppointments = await _medicalAppointmentRepository.GetProfessionalAppointmentsAsync(professional.Id, request.page, request.pageSize, cancellationToken);
 
-        if (!medicalAppointments.Any())
-            return Result.Failure<List<MedicalAppointmentResponse>>(null);
-
         var list = medicalAppointments.Select(medicalAppointment => new MedicalAppointmentResponse(
                 medicalAppointment.Id,
                 medicalAppointment.BeatsPerMinute,

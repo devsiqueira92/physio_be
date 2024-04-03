@@ -3,6 +3,7 @@ using Physio.API.Configurations;
 using Physio.API.Filters;
 using Physio.Application.Scheduling.Commands.Create;
 using Physio.Application.Scheduling.Commands.Delete;
+using Physio.Application.Scheduling.Commands.FinishedStatus;
 using Physio.Application.Scheduling.Commands.Update;
 using Physio.Application.Scheduling.Queries.GetByDate;
 using Physio.Application.Scheduling.Queries.GetById;
@@ -36,6 +37,9 @@ public class SchedulingEndpoint : IEndpointDefinition
 
         routes.MapPut("/update", Update)
         .Produces(204);
+
+        routes.MapPut("/finished-status", FinishedStatus)
+       .Produces(204);
 
         routes.MapDelete("/{id}", Delete)
         .Produces(400)
@@ -80,6 +84,16 @@ public class SchedulingEndpoint : IEndpointDefinition
     {
         var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var result = await mediator.Send(new UpdateSchedulingCommand(request, Guid.Parse(userId)));
+
+        return result.IsSuccess ?
+            TypedResults.NoContent() :
+            TypedResults.BadRequest(result.Error);
+    }
+
+    private async Task<IResult> FinishedStatus(IMediator mediator, Guid id, HttpContext httpContext)
+    {
+        var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var result = await mediator.Send(new FinishedStatusSchedulingCommand(id, Guid.Parse(userId)));
 
         return result.IsSuccess ?
             TypedResults.NoContent() :
