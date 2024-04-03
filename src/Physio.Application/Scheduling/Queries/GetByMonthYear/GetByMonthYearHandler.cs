@@ -17,8 +17,8 @@ internal sealed class GetByMonthYearHandler : IRequestHandler<GetByMonthYearQuer
     {
         var schedulings = await _schedulingRepository.GetProfessionalAgendaByMonthYearAsync(request.scheduling.month, request.scheduling.year, request.userId, cancellationToken);
 
-        if (!schedulings.Any())
-            return Result.Failure<List<SchedulingResponse>>(null);
+        //if (!schedulings.Any())
+        //    return Result.Failure<List<SchedulingResponse>>(null);
 
         var list = schedulings.Select(scheduling => new SchedulingResponse(scheduling.Id, scheduling.Date, scheduling.PatientId, scheduling.ProfessionalId, schedulingTypeId: scheduling.SchedulingTypeId)).ToList();
 

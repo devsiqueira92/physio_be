@@ -141,7 +141,7 @@ internal sealed class SchedulingRepository : ISchedulingRepository
             .AnyAsync(sc => !sc.IsDeleted && 
                 sc.Date == date &&
                 sc.ProfessionalId == professionaiId &&
-                sc.PatientId == patientId &&
+                //sc.PatientId == patientId &&
                 sc.SchedulingStatusEntity.Status != StatusSchedulingEnum.Cancelado, 
                 cancellationToken
             );
