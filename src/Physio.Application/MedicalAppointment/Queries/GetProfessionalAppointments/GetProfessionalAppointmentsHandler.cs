@@ -20,7 +20,7 @@ internal sealed class GetProfessionalAppointmentsHandler : IRequestHandler<GetPr
     {
         var professional = await _professionalRepository.GetUserIdAsync(request.userId);
             
-        var medicalAppointments = await _medicalAppointmentRepository.GetProfessionalAppointmentsAsync(professional.Id, request.page, request.pageSize, cancellationToken);
+        var medicalAppointments = await _medicalAppointmentRepository.GetProfessionalAppointmentsAsync(professional.Id, request.pageSize, request.page, cancellationToken);
 
         var list = medicalAppointments.Select(medicalAppointment => new MedicalAppointmentResponse(
                 medicalAppointment.Id,
@@ -29,7 +29,10 @@ internal sealed class GetProfessionalAppointmentsHandler : IRequestHandler<GetPr
                 medicalAppointment.BloodOxygenation,
                 medicalAppointment.Evolution,
                 medicalAppointment.Notes,
-                medicalAppointment.Weight
+                medicalAppointment.Weight,
+                medicalAppointment.SchedulingEntity.Id,
+                medicalAppointment.SchedulingEntity.PatientEntity.Name,
+                date: medicalAppointment.SchedulingEntity.Date
             )
         ).ToList();
 

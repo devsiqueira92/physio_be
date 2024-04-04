@@ -11,7 +11,7 @@ public sealed class MedicalAppointmentEntity : BaseEntity
     public string Notes { get; set; }
     public decimal? Weight { get; set; }
 
-    public Guid? SchedulingId { get; set; }
+    public Guid SchedulingId { get; set; }
     public SchedulingEntity SchedulingEntity { get; set; }
 
     public static Result<MedicalAppointmentEntity> Create(string beatsPerMinute, string bloodPressure, string bloodOxygenation, string evolution, string notes, decimal? weight, Guid schedulingId, Guid userId) =>

@@ -31,7 +31,7 @@ internal sealed class CreateProfessionalCommandHandler : IRequestHandler<CreateP
 
         var newProfessional = ProfessionalEntity.Create(
                 request.professional.name,
-                request.professional.birthDate,
+                DateOnly.FromDateTime(request.professional.birthDate),
                 request.professional.registerNumber,
                 request.professional.appointmentValue,
                 request.userId

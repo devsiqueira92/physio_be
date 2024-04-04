@@ -9,6 +9,7 @@ public interface IMedicalAppointmentRepository
     Task<MedicalAppointmentEntity> GetAsync(Guid id, CancellationToken cancellationToken = default);
     Task<List<MedicalAppointmentEntity>> GetProfessionalAppointmentsAsync(Guid professionalId, int pagesize, int page, CancellationToken cancellationToken = default);
     Task<List<MedicalAppointmentEntity>> GetPatientAppointmentsAsync(Guid patientId, int pagesize, int page, CancellationToken cancellationToken = default);
+    Task<MedicalAppointmentEntity> GetBySchedulingIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     //Task<List<MedicalAppointmentEntity>> GetMyAppointmentsAsync(string userId, CancellationToken cancellationToken = default);
 }

@@ -38,7 +38,7 @@ public class SchedulingEndpoint : IEndpointDefinition
         routes.MapPut("/update", Update)
         .Produces(204);
 
-        routes.MapPut("/finished-status", FinishedStatus)
+        routes.MapPut("/finished-status/{id}", FinishedStatus)
        .Produces(204);
 
         routes.MapDelete("/{id}", Delete)
@@ -90,10 +90,10 @@ public class SchedulingEndpoint : IEndpointDefinition
             TypedResults.BadRequest(result.Error);
     }
 
-    private async Task<IResult> FinishedStatus(IMediator mediator, Guid id, HttpContext httpContext)
+    private async Task<IResult> FinishedStatus(IMediator mediator, string id, HttpContext httpContext)
     {
         var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var result = await mediator.Send(new FinishedStatusSchedulingCommand(id, Guid.Parse(userId)));
+        var result = await mediator.Send(new FinishedStatusSchedulingCommand(Guid.Parse(id), Guid.Parse(userId)));
 
         return result.IsSuccess ?
             TypedResults.NoContent() :

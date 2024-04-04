@@ -43,8 +43,8 @@ internal sealed class CreateMedicalAppointmentCommandHandler : IRequestHandler<C
                 newMedicalAppointment.Value.BloodOxygenation, 
                 newMedicalAppointment.Value.Evolution, 
                 newMedicalAppointment.Value.Notes, 
-                newMedicalAppointment.Value.Weight
-                //newMedicalAppointment.Value.SchedulingId
+                newMedicalAppointment.Value.Weight,
+                newMedicalAppointment.Value.SchedulingId
             );
         }
 

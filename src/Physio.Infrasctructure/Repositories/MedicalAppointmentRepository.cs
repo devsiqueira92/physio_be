@@ -16,7 +16,67 @@ internal class MedicalAppointmentRepository : IMedicalAppointmentRepository
     public async Task<MedicalAppointmentEntity> GetAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var query = _context.MedicalAppointments
-                   .Where(cls => !cls.IsDeleted && cls.Id == id);
+                    .Select(d => new MedicalAppointmentEntity
+                    {
+                        BeatsPerMinute = d.BeatsPerMinute,
+                        BloodOxygenation = d.BloodOxygenation,
+                        BloodPressure = d.BloodPressure,
+                        Evolution = d.Evolution,
+                        Notes = d.Notes,
+                        Weight = d.Weight,
+                        IsDeleted = d.IsDeleted,
+                        Id = d.Id,
+                        SchedulingId = d.SchedulingId,
+                        CreatedOn = d.CreatedOn,
+                        //SchedulingEntity = new SchedulingEntity
+                        //{
+                        //    Id = d.SchedulingEntity.Id,
+                        //    Date = d.SchedulingEntity.Date,
+                        //    PatientEntity = new PatientEntity
+                        //    {
+                        //        Name = d.SchedulingEntity.PatientEntity.Name,
+                        //    },
+
+                        //    ProfessionalEntity = new ProfessionalEntity
+                        //    {
+                        //        Name = d.SchedulingEntity.ProfessionalEntity.Name,
+                        //    }
+                        //},
+                    })
+                    .Where(cls => !cls.IsDeleted && cls.Id == id);
+
+        return await query.SingleOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<MedicalAppointmentEntity> GetBySchedulingIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var query = _context.MedicalAppointments
+                    .Select(d => new MedicalAppointmentEntity
+                    {
+                        BeatsPerMinute = d.BeatsPerMinute,
+                        BloodOxygenation = d.BloodOxygenation,
+                        BloodPressure = d.BloodPressure,
+                        Evolution = d.Evolution,
+                        Notes = d.Notes,
+                        Weight = d.Weight,
+                        IsDeleted = d.IsDeleted,
+                        Id = d.Id,
+                        SchedulingId = d.SchedulingId,
+                        SchedulingEntity = new SchedulingEntity
+                        {
+                            Date = d.SchedulingEntity.Date,
+                            PatientEntity = new PatientEntity
+                            {
+                                Name = d.SchedulingEntity.PatientEntity.Name,
+                            },
+
+                            ProfessionalEntity = new ProfessionalEntity
+                            {
+                                Name = d.SchedulingEntity.ProfessionalEntity.Name,
+                            }
+                        },
+                    })
+                    .Where(cls => !cls.IsDeleted && cls.SchedulingId == id);
 
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
@@ -25,6 +85,32 @@ internal class MedicalAppointmentRepository : IMedicalAppointmentRepository
     {
         var query = _context.MedicalAppointments
                     .AsNoTracking()
+                    .Select(d => new MedicalAppointmentEntity
+                    {
+                        BeatsPerMinute = d.BeatsPerMinute,
+                        BloodOxygenation = d.BloodOxygenation,
+                        BloodPressure = d.BloodPressure,
+                        Evolution = d.Evolution,
+                        Notes = d.Notes,
+                        Weight = d.Weight,
+                        IsDeleted = d.IsDeleted,
+                        Id = d.Id,
+                        SchedulingId = d.SchedulingId,
+                        SchedulingEntity = new SchedulingEntity
+                        {
+
+                            Date = d.SchedulingEntity.Date,
+                            PatientId = d.SchedulingEntity.PatientId,
+                            ProfessionalEntity = new ProfessionalEntity
+                            {
+                                Name = d.SchedulingEntity.ProfessionalEntity.Name,
+                            },
+                            PatientEntity = new PatientEntity
+                            {
+                                Name = d.SchedulingEntity.PatientEntity.Name,
+                            }
+                        },
+                    })
                     .Where(cls => cls.SchedulingEntity.PatientId == patientId)
                    
                     .OrderByDescending(status => status.SchedulingEntity.Date)
@@ -38,8 +124,26 @@ internal class MedicalAppointmentRepository : IMedicalAppointmentRepository
     {
         var query = _context.MedicalAppointments
                     .AsNoTracking()
+                    .Select(d => new MedicalAppointmentEntity
+                    {   BeatsPerMinute = d.BeatsPerMinute,
+                        BloodOxygenation= d.BloodOxygenation,
+                        BloodPressure= d.BloodPressure,
+                        Evolution = d.Evolution,
+                        Notes = d.Notes,
+                        Weight = d.Weight,
+                        Id = d.Id,
+                        SchedulingEntity = new SchedulingEntity
+                        {
+                            Id = d.SchedulingEntity.Id,
+                            Date = d.SchedulingEntity.Date,
+                            ProfessionalId = professionalId,
+                            PatientEntity = new PatientEntity
+                            {
+                                Name = d.SchedulingEntity.PatientEntity.Name,
+                            }
+                        },
+                    })
                     .Where(cls => cls.SchedulingEntity.ProfessionalId == professionalId)
-                   
                     .OrderByDescending(status => status.SchedulingEntity.Date)
                     .Skip((page - 1) * pagesize)
                     .Take(pagesize);

@@ -48,12 +48,41 @@ internal sealed class SchedulingRepository : ISchedulingRepository
                         ProfessionalId = d.ProfessionalId,
                         SchedulingStatusId = d.SchedulingStatusId,
                         SchedulingTypeId = d.SchedulingTypeId,
+                    
                         Id = d.Id,
                         CreatedOn = d.CreatedOn,
                     });
 
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
+
+    //public async Task<SchedulingEntity> GetWithDetailsAsync(Guid id, CancellationToken cancellationToken = default)
+    //{
+    //    var query = _context.Schedulings
+    //                .Where(cls => !cls.IsDeleted && cls.Id == id)
+    //                .Select(d => new SchedulingEntity
+    //                {
+    //                    Date = d.Date,
+    //                    PatientId = d.PatientId,
+    //                    ProfessionalId = d.ProfessionalId,
+    //                    SchedulingStatusId = d.SchedulingStatusId,
+    //                    SchedulingTypeId = d.SchedulingTypeId,
+    //                    PatientEntity = new PatientEntity
+    //                    {
+    //                        Name = d.PatientEntity.Name,
+    //                        BirthDate = d.PatientEntity.BirthDate,
+    //                        Contact = d.PatientEntity.Contact,
+    //                    },
+    //                    ProfessionalEntity = new ProfessionalEntity
+    //                    {
+    //                        Name = d.ProfessionalEntity.Name
+    //                    },
+    //                    Id = d.Id,
+    //                    CreatedOn = d.CreatedOn,
+    //                });
+
+    //    return await query.SingleOrDefaultAsync(cancellationToken);
+    //}
 
     public async Task<SchedulingEntity> GetWithDetailsAsync(Guid id, CancellationToken cancellationToken = default)
     {
