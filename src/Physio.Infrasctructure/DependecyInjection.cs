@@ -40,6 +40,7 @@ public static class DependencyInjection
 
     private static void AddContext(IServiceCollection services, IConfiguration configurationManager)
     {
+        var conn = configurationManager.GetConnectionString("Database");
         services.AddDbContext<PhysioContext>(dbContext =>
         {
             dbContext.UseSqlServer(configurationManager.GetConnectionString("Database"));

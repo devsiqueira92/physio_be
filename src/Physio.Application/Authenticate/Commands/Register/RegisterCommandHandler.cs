@@ -30,6 +30,8 @@ internal sealed class RegisterCommandHandler : IRequestHandler<RegisterCommand, 
             LoginType = accountType
         };
 
+        var username = identityUser.UserName;
+
         var user = await _userManager.CreateAsync(identityUser, request.credentials.password);
 
         if (user.Succeeded)
