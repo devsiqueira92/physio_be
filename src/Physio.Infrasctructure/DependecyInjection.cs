@@ -40,10 +40,9 @@ public static class DependencyInjection
 
     private static void AddContext(IServiceCollection services, IConfiguration configurationManager)
     {
-        var conn = configurationManager.GetConnectionString("Database");
         services.AddDbContext<PhysioContext>(dbContext =>
         {
-            dbContext.UseSqlServer("Server=tcp:dbphysio.database.windows.net,1433;Initial Catalog=physio-db;Persist Security Info=False;User ID=physio;Password=$yNc+ter1992;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            dbContext.UseSqlServer(configurationManager.GetConnectionString("Database"));
         });
     }
 
